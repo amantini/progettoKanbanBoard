@@ -18,7 +18,7 @@
         </form>
         <div class="tab">
             <div class="colonne" id="1">
-                <h3 class="titolo">Da Fare</h3>
+                <h3 class="titolo" draggable="true">Da Fare</h3>
             </div>
             <div class="colonne" id="2">
                 <h3 class="titolo">In Esecuzione</h3>
