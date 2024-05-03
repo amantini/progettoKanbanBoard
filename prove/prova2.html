@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabella Attività</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Tabella Attività</h2>
+
+<table id="attivitaTable">
+  <tr>
+    <th>Attività</th>
+    <th>Da Fare</th>
+    <th>In Corso</th>
+    <th>Completate</th>
+  </tr>
+  <tr>
+    <td>Attività 1</td>
+    <td onclick="spostaAttivita(0, 1)">X</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Attività 2</td>
+    <td onclick="spostaAttivita(1, 1)">X</td>
+    <td onclick="spostaAttivita(1, 2)">X</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Attività 3</td>
+    <td></td>
+    <td onclick="spostaAttivita(2, 2)">X</td>
+    <td onclick="spostaAttivita(2, 3)">X</td>
+  </tr>
+  <tr>
+    <td>Attività 4</td>
+    <td></td>
+    <td></td>
+    <td onclick="spostaAttivita(3, 3)">X</td>
+  </tr>
+</table>
+
+<script>
+  function spostaAttivita(riga, colonna) {
+    var table = document.getElementById("attivitaTable");
+    var rigaAttivita = table.rows[riga + 1];
+    var cellaAttivita = rigaAttivita.cells[colonna];
+    if (cellaAttivita.innerHTML === "") {
+      cellaAttivita.innerHTML = "X";
+      var colonnaPrecedente = colonna - 1;
+      var cellaPrecedente = rigaAttivita.cells[colonnaPrecedente];
+      cellaPrecedente.innerHTML = "";
+    }
+  }
+</script>
+
+</body>
+</html>

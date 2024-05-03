@@ -1,0 +1,83 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+
+}
+
+.pagina {
+  width: 100%;
+  height: 100vh;
+  overflow: scroll;
+  background-image: url(https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80);
+  background-position: center;
+  background-size: cover;
+}
+
+/* ---- FORM ---- */
+#form {
+  padding: 32px 32px 0;
+}
+
+#form input {
+  padding: 12px;
+  margin-right: 12px;
+  width: 225px;
+  border-radius: 4px;
+  border: none;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+  background: white;
+  font-size: 14px;
+  outline: none;
+}
+
+#form button {
+  padding: 12px 32px;
+  border-radius: 4px;
+  border: none;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+  background: #ffffff;
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* ---- BOARD ---- */
+.tab {
+  display: flex;
+  align-items: flex-start;
+  justify-content: start;
+  gap: 16px;
+  padding: 24px 32px;
+  height: 100%;
+}
+
+.titolo {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.colonne {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #f4f4f4;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+  padding: 12px;
+  border-radius: 4px;
+  width: 225px;
+  min-height: 120px;
+  flex-shrink: 0;
+}
+
+.task {
+  background: white;
+  color: black;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 16px;
+
+}
