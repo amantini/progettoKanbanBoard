@@ -37,9 +37,8 @@
             // creo contatore perché ho bisogno che ogni paragrafo abbia un id
             // affinchè possa renderli univoci per spostarli
             // parto da 5 perché sopra ho degli altri id dall'1 al 4
-            $counter = 0;
             while ($row = mysqli_fetch_assoc($result)) {
-                $id = $counter;
+                $id = $row['id'];
                 $nome = $row['nome'];
                 $stato = $row['stati'];
                 // avvio lo script
@@ -61,13 +60,11 @@
                 // aggiungo al padre "cella" ogni paragrafo figlio
                 echo "cella.appendChild(p);";
                 echo "</script>";
-                $counter++;
             }
         }
         ?>
         <script>
             'use strict';
-
             function permettiDrop(event) {
                 // visto che gli oggetti non sono di base trascinabili, stabilisco quelli che lo sono
                 event.preventDefault();
@@ -77,7 +74,6 @@
                 // stabilisco il tipo dei dati dell'elemento target dell'evento (id)
                 event.dataTransfer.setData("text", event.target.id);
             }
-
             function drop(event) {
                 event.preventDefault();
                 var data = event.dataTransfer.getData("text");
