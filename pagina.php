@@ -41,6 +41,7 @@
                 $id = $row['id'];
                 $nome = $row['nome'];
                 $stato = $row['stati'];
+                //$descrizione
                 // avvio lo script
                 echo "<script>";
                 // creo un paragrafo impostando il testo, la classe (per il css), l'id (utile per il drag)
@@ -51,6 +52,9 @@
                 echo "p.id='$id';";
                 echo "p.draggable = true;";
                 echo "p.style.cursor = 'move';";
+                echo "p.onclick = function(event) {
+                      alert(this.innerText);; // 'this' refers to the paragraph element
+                    };";
                 echo "p.ondragstart = 
                         function(event) { 
                             drag(event); 
