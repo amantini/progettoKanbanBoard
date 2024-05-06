@@ -41,7 +41,7 @@
                 $id = $row['id'];
                 $nome = $row['nome'];
                 $stato = $row['stati'];
-                //$descrizione
+                $descrizione = $row['descrizione'];
                 // avvio lo script
                 echo "<script>";
                 // creo un paragrafo impostando il testo, la classe (per il css), l'id (utile per il drag)
@@ -52,9 +52,10 @@
                 echo "p.id='$id';";
                 echo "p.draggable = true;";
                 echo "p.style.cursor = 'move';";
-                echo "p.onclick = function(event) {
-                      alert(this.innerText);; // 'this' refers to the paragraph element
-                    };";
+                echo "p.onclick = 
+                        function(event) {
+                            mostraDescrizione(event); 
+                        };";
                 echo "p.ondragstart = 
                         function(event) { 
                             drag(event); 
@@ -69,6 +70,7 @@
         ?>
         <script>
             'use strict';
+
             function permettiDrop(event) {
                 // visto che gli oggetti non sono di base trascinabili, stabilisco quelli che lo sono
                 event.preventDefault();
@@ -78,6 +80,7 @@
                 // stabilisco il tipo dei dati dell'elemento target dell'evento (id)
                 event.dataTransfer.setData("text", event.target.id);
             }
+
             function drop(event) {
                 event.preventDefault();
                 var data = event.dataTransfer.getData("text");
@@ -105,6 +108,24 @@
                         "Content-type": "application/json; charset=UTF-8"
                     }
                 });
+            }
+            // ----TODO descrizione dell'attività al click, non scompare e ricompare come dovrebbe, problema con i child
+            var num = 0;
+            function mostraDescrizione(event) {
+                //console.log(event.target.id);
+                
+                const p = document.getElementById(event.target.id);
+                const descrizione = document.createElement("p");
+                descrizione.innerText = "ciao";
+                if (num == 0) {
+                    p.appendChild(descrizione);
+                    num++;
+                } else 
+                    if (num == 1) {
+                        p.removeChild(descrizione);
+                        num = 0;
+                    }
+                
             }
         </script>
     </div>
