@@ -1,6 +1,6 @@
 <?php
 
-$conn = mysqli_connect("localhost", "root", "", "kanban");
+$conn = mysqli_connect("localhost", "root", "", "5i1_kanban");
 
 if (!$conn) {
     die("connessione fallita: " . mysqli_connect_error());
