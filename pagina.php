@@ -8,138 +8,68 @@
     <title>Kanban Board</title>
     <link rel="stylesheet" href="styles.css">
     <!-- LO STILE SERVE SOLO PER I MODAL, NEL FILE CSS NON FUNZIONAVA E NON HO AVUTO TEMPO DI CONTROLLARE IL MOTIVO -->
-    <style>
-        .header {
-            padding: 20px;
-            background-color: #f1f1f1;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .header button {
-            padding: 10px 20px;
-            margin-left: 10px;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 10;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 300px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .form-container input {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-bottom: 2px solid grey;
-            background: transparent;
-            outline: none;
-        }
-
-        .form-container input:focus {
-            border-bottom-color: black;
-        }
-
-        .form-container button {
-            margin-top: 20px;
-        }
-    </style>
 </head>
 
 <body>
-    <!-- FINO A DIV PAGINA E' TUTTO MODAL -->
-    <div class="header">
-        <button onclick="showModal('loginModal')">Login</button>
-        <button onclick="showModal('registerModal')">Registrati</button>
-    </div>
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('loginModal')">&times;</span>
-            <h2>Login</h2>
-            <form>
-                <div class="form-container">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                    <button type="submit">Accedi</button>
-                </div>
-            </form>
+    <div id="all">
+        <!-- FINO A DIV PAGINA E' TUTTO MODAL -->
+        <div class="header">
+            <h3>Loggato: Amantini Alessandro</h3>
+            <button onclick="showModal('loginModal')">Login</button>
+            <button onclick="showModal('registerModal')">Registrati</button>
         </div>
-    </div>
-    <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('registerModal')">&times;</span>
-            <h2>Registrati</h2>
-            <form>
-                <div class="form-container">
-                    <label for="new-username">Username:</label>
-                    <input type="text" id="new-username" name="new-username" required>
-                    <label for="new-password">Password:</label>
-                    <input type="password" id="new-password" name="new-password" required>
-                    <button type="submit">Registrati</button>
-                </div>
-            </form>
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('loginModal')">&times;</span>
+                <h2>Login</h2>
+                <form>
+                    <div class="form-container">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                        <button type="submit">Accedi</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-    <div class="pagina">
-        <form id="form">
-            <input type="text" placeholder="Nuova attività..." id="input" />
-            <button type="submit" formaction="aggiungi.php">Aggiungi +</button>
-        </form>
-        <div class="tab" ondragover="permettiDrop(event)" draggable="false">
-            <div class="colonna" ondrop="drop(event)" id="col1" ondragover="permettiDrop(event)">
-                <h3 class="titolo">Da Fare</h3>
+        <div id="registerModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('registerModal')">&times;</span>
+                <h2>Registrati</h2>
+                <form>
+                    <div class="form-container">
+                        <label for="new-username">Username:</label>
+                        <input type="text" id="new-username" name="new-username" required>
+                        <label for="new-password">Password:</label>
+                        <input type="password" id="new-password" name="new-password" required>
+                        <button type="submit">Registrati</button>
+                    </div>
+                </form>
             </div>
-            <div class="colonna" ondrop="drop(event)" id="col2" ondragover="permettiDrop(event)">
-                <h3 class="titolo">In Esecuzione</h3>
-            </div>
-            <div class="colonna" ondrop="drop(event)" id="col3" ondragover="permettiDrop(event)">
-                <h3 class="titolo">Fatto</h3>
-            </div>
-            <div class="colonna" ondrop="drop(event)" id="col4" ondragover="permettiDrop(event)">
-                <h3 class="titolo">Terminato</h3>
+        </div>
+        <div class="pagina">
+            <form id="form">
+                <input type="text" placeholder="Nuova attività..." id="input" />
+                <button type="submit" formaction="aggiungi.php">Aggiungi +</button>
+            </form>
+            <div class="tab" ondragover="permettiDrop(event)" draggable="false">
+                <div class="colonna" ondrop="drop(event)" id="col1" ondragover="permettiDrop(event)">
+                    <h3 class="titolo">Da Fare</h3>
+                </div>
+                <div class="colonna" ondrop="drop(event)" id="col2" ondragover="permettiDrop(event)">
+                    <h3 class="titolo">In Esecuzione</h3>
+                </div>
+                <div class="colonna" ondrop="drop(event)" id="col3" ondragover="permettiDrop(event)">
+                    <h3 class="titolo">Fatto</h3>
+                </div>
+                <div class="colonna" ondrop="drop(event)" id="col4" ondragover="permettiDrop(event)">
+                    <h3 class="titolo">Terminato</h3>
+                </div>
             </div>
         </div>
         <?php
-        $conn = mysqli_connect("localhost", "root", "", "5i1_kanban");
+        $conn = mysqli_connect("localhost", "root", "", "kanban");
         $sql = "SELECT * FROM stati";
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
