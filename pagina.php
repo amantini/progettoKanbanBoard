@@ -99,18 +99,22 @@
                         function(event) { 
                             drag(event); 
                         };";
-
-
+                echo "p.onmousedown = function(event) { modifica(event);};";
                 echo "var descrizione = document.createElement('p');";
-                echo "descrizione.className='desc';";
-                echo "descrizione.style.display='block';";
+                echo "descrizione.id='descrizione$id';";
+                echo "descrizione.style.display='none';";
                 echo "descrizione.innerText = '" . $descrizione . "';";
-                echo "p.appendChild(descrizione);";
-
-
                 // per organizzare le attività nelle colonne uso lo stato come indice
                 echo "var cella = document.getElementById('col$stato');";
+                echo "var titoloDesc= document.createElement('h5');";
+                echo "titoloDesc.id='titoloDesc$id';";
+                echo "titoloDesc.innerText='Descrizione';";
+                echo "titoloDesc.style.display='none';";
+                echo "titoloDesc.style.paddingTop='1em';";
+                echo "titoloDesc.className = 'desc-titolo';";
                 // aggiungo al padre "cella" ogni paragrafo figlio
+                echo "p.appendChild(titoloDesc);";
+                echo "p.appendChild(descrizione);";
                 echo "cella.appendChild(p);";
                 echo "</script>";
             }
@@ -161,19 +165,73 @@
             var num = 0;
 
             function mostraDescrizione(event) {
-                console.log(event.target.id);
-                const p = document.getElementById(event.target.id);
-                const descrizione = document.getElementById("desc");
-                descrizione.innerText = "ciao";
-                console.log(descrizione.style.display);
-                if (descrizione.style.display === "none") {
-                    descrizione.style.display = "block";
-                    console.log(descrizione.style.display);
+                if (num === 0) {
+                    const p = document.getElementById(event.target.id);
+                    const titoloDescrizione = document.getElementById("titoloDesc" + event.target.id);
+                    const descrizione = document.getElementById("descrizione" + event.target.id);
+                    if (descrizione.style.display === "none" || descrizione.style.display === "") {
+                        titoloDescrizione.style.display = "block";
+                        descrizione.style.display = "block";
+                    }
+                    num++;
                 } else {
-                    descrizione.style.display = "none";
+                    const allDescrizioni = document.querySelectorAll('[id^="descrizione"]');
+                    const allTitoli = document.querySelectorAll('[id^="titoloDesc"]');
+                    allDescrizioni.forEach(desc => {
+                        desc.style.display = "none";
+                    });
+                    allTitoli.forEach(titolo => {
+                        titolo.style.display = "none";
+                    });
+                    num = 0;
                 }
-
             }
+
+            document.addEventListener("contextmenu", function(event) {
+                if (event.target.tagName.toLowerCase() === "p") {
+                    event.preventDefault();
+                }
+            });
+
+            function modifica(event) {
+                var id = event.target.id;
+                if (event.button == 2) { 
+                    const p = document.getElementById(event.target.id);
+                    const descrizione= document.getElementById("descrizione"+id);
+                    p.contentEditable = true;
+                    const allTitoli = document.querySelectorAll('[id^="titoloDesc"]');
+                    allTitoli.forEach(titolo => {
+                        titolo.contentEditable = false;
+                    });
+                    p.addEventListener("keydown", function(event) {
+                        if (event.keyCode === 13) { 
+                            event.preventDefault();
+                            p.contentEditable = false;
+                            var contenuto = p.innerText;
+                            var contenutoDescrizione = descrizione.innerText;
+                            //console.log(contenutoDescrizione);
+                            console.log(contenuto);
+                            inviaModificaAtt(contenuto, contenutoDescrizione, id);
+                        }
+                    });
+                }
+            }
+            /*async function inviaModificaAtt(contenuto, descrizione , id) {
+                var inviaContenuto = contenuto;
+                var inviaDescrizione = descrizione;
+                var inviaId = id;
+                const risposta = await fetch(`modificaAttivita.php`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        contenuto: inviaContenuto,
+                        descrizione: inviaDescrizione,
+                        id: inviaId
+                    }),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                });
+            }*/
             // fare vedere i popup (modal)
             function showModal(modalId) {
                 document.getElementById(modalId).style.display = 'block';

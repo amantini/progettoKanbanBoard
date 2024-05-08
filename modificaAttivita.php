@@ -10,9 +10,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $dati_json = file_get_contents('php://input');
     $dati_decodificati = json_decode($dati_json, true);
-    $id_attivita = $dati_decodificati['dato'];
-
-    $sql = "UPDATE stati SET stati = stati + 1  WHERE id = $id_attivita";
+    $contenuto = $dati_decodificati['contenuto'];
+    $descrizione = $dati_decodificati['descrizione'];
+    $id = $dati_decodificati['id'];
+    $sql = "UPDATE stati SET nome = '$contenuto' AND descrizione='$descrizione' WHERE id = $id";
     if (mysqli_query($conn, $sql)) {
         echo "Successo";
     } else {

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toggle Description</title>
+    <style>
+        /* Style for the description paragraph */
+        .desc {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Paragraph with onclick event -->
+    <p class="target" id="paragraph1">Click me to toggle description 1</p>
+    <!-- Description paragraph, initially hidden -->
+    <p class="desc">Description 1</p>
+
+    <!-- Paragraph with onclick event -->
+    <p class="target" id="paragraph2">Click me to toggle description 2</p>
+    <!-- Description paragraph, initially hidden -->
+    <p class="desc">Description 2</p>
+
+    <script>
+        // Add click event listener to the parent element
+        document.body.addEventListener('click', function(event) {
+            // Check if the clicked element has class "target"
+            if (event.target.classList.contains('target')) {
+                // Get the description paragraph associated with the clicked element
+                const targetId = event.target.id;
+                const descrizione = document.querySelector(`#${targetId} + .desc`);
+                
+                // Toggle the display of the description paragraph
+                if (descrizione.style.display === "none" || descrizione.style.display === "") {
+                    descrizione.style.display = "block";
+                } else {
+                    descrizione.style.display = "none";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
