@@ -23,7 +23,7 @@
                 <span class="close" onclick="closeModal('loginModal')">&times;</span>
                 <h2>Login</h2>
                 <form>
-                    <div class="form-container">
+                    <div class="form-p">
                         <label for="username">Username:</label>
                         <input type="text" id="username" name="username" required>
                         <label for="password">Password:</label>
@@ -38,7 +38,7 @@
                 <span class="close" onclick="closeModal('registerModal')">&times;</span>
                 <h2>Registrati</h2>
                 <form>
-                    <div class="form-container">
+                    <div class="form-p">
                         <label for="new-username">Username:</label>
                         <input type="text" id="new-username" name="new-username" required>
                         <label for="new-password">Password:</label>
@@ -99,6 +99,15 @@
                         function(event) { 
                             drag(event); 
                         };";
+
+
+                echo "var descrizione = document.createElement('p');";
+                echo "descrizione.className='desc';";
+                echo "descrizione.style.display='block';";
+                echo "descrizione.innerText = '" . $descrizione . "';";
+                echo "p.appendChild(descrizione);";
+
+
                 // per organizzare le attività nelle colonne uso lo stato come indice
                 echo "var cella = document.getElementById('col$stato');";
                 // aggiungo al padre "cella" ogni paragrafo figlio
@@ -153,17 +162,15 @@
 
             function mostraDescrizione(event) {
                 console.log(event.target.id);
-
                 const p = document.getElementById(event.target.id);
-                const descrizione = document.createElement("p");
+                const descrizione = document.getElementById("desc");
                 descrizione.innerText = "ciao";
-                if (num == 0) {
-                    p.appendChild(descrizione);
-                    num++;
-                } else
-                if (num == 1) {
-                    p.removeChild(descrizione);
-                    num = 0;
+                console.log(descrizione.style.display);
+                if (descrizione.style.display === "none") {
+                    descrizione.style.display = "block";
+                    console.log(descrizione.style.display);
+                } else {
+                    descrizione.style.display = "none";
                 }
 
             }
