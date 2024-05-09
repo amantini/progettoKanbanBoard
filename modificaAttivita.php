@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contenuto = $dati_decodificati['contenuto'];
     $descrizione = $dati_decodificati['descrizione'];
     $id = $dati_decodificati['id'];
-    $sql = "UPDATE stati SET nome = '$contenuto' AND descrizione='$descrizione' WHERE id = $id";
+    $sql = "UPDATE stati SET nome = '$contenuto', descrizione = '$descrizione' WHERE id = $id";
     if (mysqli_query($conn, $sql)) {
         echo "Successo";
     } else {

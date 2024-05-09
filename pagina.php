@@ -194,32 +194,36 @@
             });
 
             function modifica(event) {
-                var id = event.target.id;
-                if (event.button == 2) { 
+                var id = parseInt(event.target.id);
+                if (event.button == 2) {
                     const p = document.getElementById(event.target.id);
-                    const descrizione= document.getElementById("descrizione"+id);
+                    const descrizione = document.getElementById("descrizione" + id);
                     p.contentEditable = true;
                     const allTitoli = document.querySelectorAll('[id^="titoloDesc"]');
                     allTitoli.forEach(titolo => {
                         titolo.contentEditable = false;
                     });
                     p.addEventListener("keydown", function(event) {
-                        if (event.keyCode === 13) { 
+                        if (event.keyCode === 13) {
                             event.preventDefault();
                             p.contentEditable = false;
-                            var contenuto = p.innerText;
+                            var contenuto = p.innerText.split('\n')[0].trim();
                             var contenutoDescrizione = descrizione.innerText;
-                            //console.log(contenutoDescrizione);
                             console.log(contenuto);
+                            console.log(contenutoDescrizione);
+                            console.log(id);
                             inviaModificaAtt(contenuto, contenutoDescrizione, id);
                         }
                     });
                 }
             }
-            /*async function inviaModificaAtt(contenuto, descrizione , id) {
+            async function inviaModificaAtt(contenuto, contenutoDescrizione, id) {
                 var inviaContenuto = contenuto;
-                var inviaDescrizione = descrizione;
+                var inviaDescrizione = contenutoDescrizione;
                 var inviaId = id;
+                console.log("inviaContenuto:", inviaContenuto);
+                console.log("inviaDescrizione:", inviaDescrizione);
+                console.log("inviaId:", inviaId);
                 const risposta = await fetch(`modificaAttivita.php`, {
                     method: "POST",
                     body: JSON.stringify({
@@ -231,7 +235,7 @@
                         "Content-type": "application/json; charset=UTF-8"
                     }
                 });
-            }*/
+            }
             // fare vedere i popup (modal)
             function showModal(modalId) {
                 document.getElementById(modalId).style.display = 'block';
