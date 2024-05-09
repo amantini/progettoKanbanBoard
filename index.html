@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login and Register Page</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    .container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center; /* Centra il contenuto orizzontalmente */
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="password"] {
+        width: calc(100% - 22px); /* Sottrae il padding dai 10px per ciascun lato */
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid #ccc; /* Linea sotto il testo */
+        outline: none; /* Rimuove il bordo quando in focus */
+        margin-right: 11px; /* Spazio tra il campo di input e il bordo destro */
+        transition: border-color 0.3s; /* Aggiunta transizione per il cambio di colore del bordo */
+    }
+    .form-group input[type="text"]:focus,
+    .form-group input[type="password"]:focus {
+        border-color: #007bff; /* Cambio del colore del bordo quando l'input è in focus */
+    }
+    .form-group button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 10px; /* Spazio tra i bottoni e il form */
+    }
+    .form-group button:hover {
+        background-color: #0056b3;
+    }
+    .register-form {
+        display: none;
+    }
+    .fade-in {
+        animation: fadeIn 0.5s ease-in-out forwards; /* Aggiunta dell'animazione fadeIn */
+    }
+    .fade-out {
+        animation: fadeOut 0.5s ease-in-out forwards; /* Aggiunta dell'animazione fadeOut */
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+    .btn-login,
+    .btn-register {
+        padding: 10px 30px;
+        cursor: pointer;
+        background: transparent;
+        border: 0;
+        outline: none;
+        position: relative;
+    }
+    #button-box {
+        width: 220px;
+        margin: 35px auto;
+        position: relative;
+        box-shadow: 0 0 20px 9px #ff61241f;
+        border-radius: 30px ;
+    }
+
+    #buttons {
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 110px;
+        height: 100%;
+        background: linear-gradient( #ff105f, #ffad06);
+        border-radius: 30px;
+        transition: .5s;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div id="button-box">
+        <div id="buttons"></div>
+        <button class="btn-login" onclick="showLoginForm()">Login</button>
+        <button class="btn-register" onclick="showRegisterForm()">Register</button>
+    </div>
+    <div id="loginForm" class="fade-in"> <!-- Aggiunta della classe fade-in -->
+        <h2>Login</h2>
+        <div class="form-group">
+            <label for="loginUsername">Username</label>
+            <input type="text" id="loginUsername" placeholder="Enter your username">
+        </div>
+        <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" placeholder="Enter your password">
+        </div>
+        <div class="form-group">
+            <button onclick="showRegisterForm()">Register</button>
+        </div>
+    </div>
+    <div id="registerForm" class="register-form fade-out"> <!-- Aggiunta della classe fade-out -->
+        <h2>Register</h2>
+        <div class="form-group">
+            <label for="registerName">Name</label>
+            <input type="text" id="registerName" placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+            <label for="registerSurname">Surname</label>
+            <input type="text" id="registerSurname" placeholder="Enter your surname">
+        </div>
+        <div class="form-group">
+            <label for="registerUsername">Username</label>
+            <input type="text" id="registerUsername" placeholder="Choose a username">
+        </div>
+        <div class="form-group">
+            <label for="registerPassword">Password</label>
+            <input type="password" id="registerPassword" placeholder="Choose a password">
+        </div>
+        <div class="form-group">
+            <button onclick="showLoginForm()">Login</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showLoginForm() {
+        document.getElementById('loginForm').classList.remove('fade-out'); // Rimuove la classe fade-out
+        document.getElementById('loginForm').classList.add('fade-in'); // Aggiunge la classe fade-in
+        document.getElementById('registerForm').classList.remove('fade-in'); // Rimuove la classe fade-in
+        document.getElementById('registerForm').classList.add('fade-out'); // Aggiunge la classe fade-out
+    }
+
+    function showRegisterForm() {
+        document.getElementById('loginForm').classList.remove('fade-in'); // Rimuove la classe fade-in
+        document.getElementById('loginForm').classList.add('fade-out'); // Aggiunge la classe fade-out
+        document.getElementById('registerForm').classList.remove('fade-out'); // Rimuove la classe fade-out
+        document.getElementById('registerForm').classList.add('fade-in'); // Aggiunge la classe fade-in
+    }
+</script>
+
+</body>
+</html>
