@@ -47,27 +47,38 @@ if (!isset($_SESSION["credenziali"])) {
     <?php
     $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
     //$conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
-    $sql = "SELECT * from modifiche, task where fk_task = task.id;
-    );    
-    );";
-
-    
+    $sql = "SELECT  task.titolo, modifiche.*
+            FROM task,  modifiche, utenti
+                WHERE fk_utente = utenti.username
+                AND fk_task = task.id
+                AND (task.id, utenti.username, modifiche.id) IN 
+                (
+                    SELECT modifiche.fk_task, modifiche.fk_utente, MAX(modifiche.id) as max_id
+                    FROM modifiche
+                    GROUP BY modifiche.fk_task, modifiche.fk_utente
+                );";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         // creo contatore perché ho bisogno che ogni paragrafo abbia un id
         // affinchè possa renderli univoci per spostarli
         // parto da 5 perché sopra ho degli altri id dall'1 al 4
         while ($row = mysqli_fetch_assoc($result)) {
+            $titolo = $row['titolo'];
             $id = $row['id'];
             $descrizione = $row['descrizione'];
-            $titolo = $row['titolo'];
             $stato = $row['fk_stato'];
-            $utente = $row['fk_utente'];
+            $utente = $_SESSION["credenziali"];
             $task = $row['fk_task'];
             echo "<script>";
             // creo un paragrafo impostando il testo, la classe (per il css), l'id (utile per il drag)
             // e le principali funzioni essenziali 
             echo "var p = document.createElement('p');";
+            echo "p.setAttribute('data-titolo', '" . htmlspecialchars($titolo) . "');";
+            echo "p.setAttribute('data-id', '" . htmlspecialchars($id) . "');";
+            echo "p.setAttribute('data-descrizione', '" . htmlspecialchars($descrizione) . "');";
+            echo "p.setAttribute('data-stato', '" . htmlspecialchars($stato) . "');";
+            echo "p.setAttribute('data-utente', '" . htmlspecialchars($utente) . "');";
+            echo "p.setAttribute('data-task', '" . htmlspecialchars($task) . "');";
             echo "p.innerText = '$titolo';";
             echo "p.className = 'task';";
             echo "p.id='$id';";
@@ -132,11 +143,27 @@ if (!isset($_SESSION["credenziali"])) {
             }
         }
         async function rilascio(data) {
-            var daInviare = parseInt(data);
+            var elementoSelezionato = document.getElementById(data);
+            var id = parseInt(elementoSelezionato.dataset.id);
+            var descrizione = elementoSelezionato.dataset.descrizione;
+            var stato = parseInt(elementoSelezionato.dataset.stato);
+            var utente = elementoSelezionato.dataset.utente;
+            var task = elementoSelezionato.dataset.task;
+
+            console.log("ID:", id);
+            console.log("Descrizione:", descrizione);
+            console.log("Stato:", stato);
+            console.log("Utente:", utente);
+            console.log("Task:", task);
+
             const risposta = await fetch(`modifica.php`, {
                 method: "POST",
                 body: JSON.stringify({
-                    dato: daInviare
+                    id: id,
+                    descrizione: descrizione,
+                    stato: stato,
+                    utente: utente,
+                    task: task
                 }),
                 headers: {
                     "Content-type": "application/json; charset=UTF-8"

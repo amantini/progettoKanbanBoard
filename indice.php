@@ -66,7 +66,7 @@
         <form id="loginForm" action="" method="post">
             <h2>Login</h2>
             <div class="form-group">
-                <input type="text" id="loginUsername" name="loginUsername" placeholder="Username" value="Kemy">
+                <input type="text" id="loginUsername" name="loginUsername" placeholder="Username" >
             </div>
             <div class="form-group">
                 <input type="password" id="loginPassword" name="loginPassword" placeholder="Password">

@@ -1,21 +1,30 @@
 <?php
 
-$conn = mysqli_connect("localhost", "root", "", "kanban");
+$conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
+//$conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
 
 if (!$conn) {
-    die("connessione fallita: " . mysqli_connect_error());
+    die("Connection failed: " . mysqli_connect_error());
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$dati_json = file_get_contents('php://input');
+$dati = json_decode($dati_json, true);
 
-    $dati_json = file_get_contents('php://input');
-    $dati_decodificati = json_decode($dati_json, true);
-    $id_attivita = mysqli_real_escape_string($conn, $dati_decodificati['dato']);
-    $sql = "UPDATE stati SET stati = stati + 1  WHERE id = $id_attivita";
-    if (mysqli_query($conn, $sql)) {
-        echo "Successo";
-    } else {
-        echo "Errore durante l'aggiornamento del record: " . mysqli_error($conn);
-    }
+$titolo = mysqli_real_escape_string($conn, $dati['titolo']);
+$id = mysqli_real_escape_string($conn, $dati['id']);
+$descrizione = mysqli_real_escape_string($conn, $dati['descrizione']);
+$stato = $dati['stato'] + 1;
+$utente = mysqli_real_escape_string($conn, $dati['utente']);
+$task = mysqli_real_escape_string($conn, $dati['task']);
+
+$sql = "INSERT INTO modifiche ( descrizione, fk_stato, fk_utente, fk_task) 
+        VALUES ('$descrizione', $stato, '$utente', '$task')";
+
+if (mysqli_query($conn, $sql)) {
+    echo "Successo nell'inserimento";
+} else {
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 }
+
 mysqli_close($conn);
+?>
