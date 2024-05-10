@@ -10,9 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $dati_json = file_get_contents('php://input');
     $dati_decodificati = json_decode($dati_json, true);
-    $contenuto = $dati_decodificati['contenuto'];
-    $descrizione = $dati_decodificati['descrizione'];
-    $id = $dati_decodificati['id'];
+    $contenuto = mysqli_real_escape_string($conn, $dati_decodificati['contenuto']);
+    $descrizione = mysqli_real_escape_string($conn, $dati_decodificati['descrizione']);
+    $id = mysqli_real_escape_string($conn, $dati_decodificati['id']);
     $sql = "UPDATE stati SET nome = '$contenuto', descrizione = '$descrizione' WHERE id = $id";
     if (mysqli_query($conn, $sql)) {
         echo "Successo";
