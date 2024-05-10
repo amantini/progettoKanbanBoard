@@ -4,6 +4,7 @@
   box-sizing: border-box;
   font-family: sans-serif;
 }
+
 .pagina {
   width: 100%;
   height: 100vh;
@@ -12,27 +13,35 @@
   background-position: center;
   background-size: cover;
 }
-#col1{
+
+#col1 {
   background-color: rgb(241, 103, 103);
 }
-#col2{
+
+#col2 {
   background-color: rgb(231, 231, 107);
 }
-#col3{
+
+#col3 {
   background-color: rgb(76, 231, 110);
 }
-#col4{
+
+#col4 {
   background-color: rgb(104, 228, 245);
 }
+
 #form {
   padding: 32px 32px 0;
 }
-h2{
+
+h2 {
   padding-bottom: 1em;
 }
-#all{
+
+#all {
   background-color: rgb(238, 238, 238);
 }
+
 .header h3 {
   margin-right: auto;
   margin-top: auto;
@@ -50,7 +59,7 @@ h2{
   outline: none;
 }
 
-#form button {
+ button {
   padding: 12px 32px;
   border-radius: 7px;
   border: none;
@@ -59,9 +68,22 @@ h2{
   color: black;
   font-weight: bold;
   font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;/
 }
 
-/* ---- BOARD ---- */
+ button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+ button:hover {
+  background-color: #dddddd;
+}
+
+ button:active {
+  background-color: #aaaaaa;
+}
+
 .tab {
   display: flex;
   align-items: flex-start;
@@ -97,6 +119,7 @@ h2{
   font-size: 16px;
   cursor: move;
 }
+
 .header {
   padding: 20px;
   margin-left: 12px;
@@ -182,4 +205,9 @@ h2{
   color: black;
   font-weight: bold;
   font-size: 14px;
+}
+.forms-container {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
 }

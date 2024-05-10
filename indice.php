@@ -20,16 +20,16 @@
         <?php
         session_start();
         $msg = "";
-        $conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
+        $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
+        //$conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
         if (isset($_POST["loginUsername"]) && isset($_POST["loginPassword"])) {
             $username = mysqli_real_escape_string($conn, $_POST["loginUsername"]);
             $password = mysqli_real_escape_string($conn, $_POST["loginPassword"]);
             if (!$conn) {
                 die("Connection failed: " . mysqli_connect_error());
             }
-            $query = "SELECT * FROM utente WHERE username = '$username' AND password = '$password'";
+            $query = "SELECT * FROM utenti WHERE username = '$username' AND password = '$password'";
             $result = mysqli_query($conn, $query);
-
             if (mysqli_num_rows($result) > 0) {
                 $_SESSION["credenziali"] = $username;
                 header("Location: pagina.php");
@@ -49,13 +49,12 @@
             $cognome = mysqli_real_escape_string($conn, $_POST["registraCognome"]);
             $password = mysqli_real_escape_string($conn, $_POST["registraPassword"]);
 
-            $sql = "SELECT username FROM utente WHERE username = '$username'";
+            $sql = "SELECT username FROM utenti WHERE username = '$username'";
             $result = mysqli_query($conn, $sql);
-
             if (mysqli_num_rows($result) > 0) {
                 $msg = "Utente già registrato";
             } else {
-                $sql = "INSERT INTO utente (username, nome, cognome, password) VALUES ('$username', '$nome', '$cognome', '$password')";
+                $sql = "INSERT INTO utenti (username, nome, cognome, password) VALUES ('$username', '$nome', '$cognome', '$password')";
                 if (mysqli_query($conn, $sql)) {
                     $msg = "Utente registrato con successo!";
                 } else {
@@ -67,7 +66,7 @@
         <form id="loginForm" action="" method="post">
             <h2>Login</h2>
             <div class="form-group">
-                <input type="text" id="loginUsername" name="loginUsername" placeholder="Username">
+                <input type="text" id="loginUsername" name="loginUsername" placeholder="Username" value="Kemy">
             </div>
             <div class="form-group">
                 <input type="password" id="loginPassword" name="loginPassword" placeholder="Password">

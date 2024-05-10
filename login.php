@@ -9,23 +9,20 @@
     <?php
     session_start();
     $msg = "";
-
     if (isset($_POST["loginUsername"]) && isset($_POST["loginPassword"])) {
         $username = $_POST["loginUsername"];
         $password = $_POST["loginPassword"];
-
-        $conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
+        $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
+        //$conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
 
         if (!$conn) {
             die("Connection failed: " . mysqli_connect_error());
         }
-
         $query = "SELECT * FROM utente WHERE username = '$username' AND password = '$password'";
         $result = mysqli_query($conn, $query);
 
         if (mysqli_num_rows($result) > 0) {
             $_SESSION["credenziali"] = $username;
-            
             header("Location: pagina.php");
             exit;
         } else {

@@ -1,3 +1,11 @@
+<?php
+// FIX!
+session_start();
+if (!isset($_SESSION["credenziali"])) {
+    header("Location: indice.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,15 +15,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kanban Board</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- LO STILE SERVE SOLO PER I MODAL, NEL FILE CSS NON FUNZIONAVA E NON HO AVUTO TEMPO DI CONTROLLARE IL MOTIVO -->
 </head>
 
 <body>
     <div class="pagina">
-        <form id="form">
-            <input type="text" placeholder="Nuova attività..." id="input" />
-            <button type="submit" formaction="aggiungi.php">Aggiungi +</button>
-        </form>
+        <div class="forms-container">
+            <form id="form">
+                <input type="text" placeholder="Nuova attività..." id="attivitaInput" required />
+                <input type="text" placeholder="Descrizione..." id="descrizioneInput" required />
+                <button type="submit" onclick="aggiungiTask()" id="bottoneAggiungi">Aggiungi +</button>
+            </form>
+            <form action="logout.php" method="POST" id="logout">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
         <div class="tab" ondragover="permettiDrop(event)" draggable="false">
             <div class="colonna" ondrop="drop(event)" id="col1" ondragover="permettiDrop(event)">
                 <h3 class="titolo">Da Fare</h3>
@@ -32,8 +45,13 @@
         </div>
     </div>
     <?php
-    $conn = mysqli_connect("localhost", "root", "", "kanban");
-    $sql = "SELECT * FROM stati";
+    $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
+    //$conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
+    $sql = "SELECT * from modifiche, task where fk_task = task.id;
+    );    
+    );";
+
+    
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         // creo contatore perché ho bisogno che ogni paragrafo abbia un id
@@ -41,15 +59,16 @@
         // parto da 5 perché sopra ho degli altri id dall'1 al 4
         while ($row = mysqli_fetch_assoc($result)) {
             $id = $row['id'];
-            $nome = $row['nome'];
-            $stato = $row['stati'];
             $descrizione = $row['descrizione'];
-            // avvio lo script
+            $titolo = $row['titolo'];
+            $stato = $row['fk_stato'];
+            $utente = $row['fk_utente'];
+            $task = $row['fk_task'];
             echo "<script>";
             // creo un paragrafo impostando il testo, la classe (per il css), l'id (utile per il drag)
             // e le principali funzioni essenziali 
             echo "var p = document.createElement('p');";
-            echo "p.innerText = '$nome';";
+            echo "p.innerText = '$titolo';";
             echo "p.className = 'task';";
             echo "p.id='$id';";
             echo "p.draggable = true;";
@@ -199,6 +218,22 @@
                     "Content-type": "application/json; charset=UTF-8"
                 }
             });
+        }
+        async function aggiungiTask() {
+            var nomeTask = attivitaInput.value;
+            var descrizioneTask = descrizioneInput.value;
+            if (/[a-zA-Z]/.test(nomeTask) && /[a-zA-Z]/.test(descrizioneTask)) {
+                const risposta = await fetch(`aggiungi.php`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        nome: nomeTask,
+                        descrizione: descrizioneTask
+                    }),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                });
+            }
         }
     </script>
     </div>
