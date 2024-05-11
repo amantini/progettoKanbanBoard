@@ -46,7 +46,7 @@ if (!isset($_SESSION["credenziali"])) {
             <form id="form">
                 <input type="text" placeholder="Nuova attività..." id="attivitaInput" required />
                 <input type="text" placeholder="Descrizione..." id="descrizioneInput" required />
-                <button type="submit" id="bottoneAggiungi">Aggiungi +</button>
+                <button type="submit" id="bottoneAggiungi" onclick="aggiungiTask()">Aggiungi +</button>
             </form>
         </div>
     </div>
@@ -245,6 +245,8 @@ if (!isset($_SESSION["credenziali"])) {
         async function aggiungiTask() {
             var nomeTask = attivitaInput.value;
             var descrizioneTask = descrizioneInput.value;
+            console.log(nomeTask);
+            console.log(descrizioneTask);
             if (/[a-zA-Z]/.test(nomeTask) && /[a-zA-Z]/.test(descrizioneTask)) {
                 const risposta = await fetch(`aggiungi.php`, {
                     method: "POST",
