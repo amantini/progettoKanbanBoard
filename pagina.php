@@ -38,7 +38,6 @@ if (!isset($_SESSION["credenziali"])) {
                 <h3 class="titolo">Terminato</h3>
             </div>
         </div>
-    </div>
 
     <div id="myModal" class="modal">
         <div class="modal-content">
@@ -50,6 +49,7 @@ if (!isset($_SESSION["credenziali"])) {
             </form>
         </div>
     </div>
+</div>
     <?php
     $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
     //$conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
@@ -69,23 +69,23 @@ if (!isset($_SESSION["credenziali"])) {
         // affinchè possa renderli univoci per spostarli
         // parto da 5 perché sopra ho degli altri id dall'1 al 4
         while ($row = mysqli_fetch_assoc($result)) {
-            $titolo = $row['titolo'];
-            $id = $row['id'];
-            $ora = $row['ora'];
-            $data = $row['data'];
-            $descrizione = $row['descrizione'];
-            $stato = $row['fk_stato'];
-            $utente = $_SESSION["credenziali"];
-            $task = $row['fk_task'];
+            $titolo = addslashes($row['titolo']);
+            $id = addslashes($row['id']);
+            $ora = addslashes($row['ora']);
+            $data = addslashes($row['data']);
+            $descrizione = addslashes($row['descrizione']);
+            $stato = addslashes($row['fk_stato']);
+            $utente = addslashes($_SESSION["credenziali"]);
+            $task = addslashes($row['fk_task']);
             echo "<script>";
             // Creo un paragrafo per il titolo dell'attività
             echo "var p = document.createElement('p');";
-            echo "p.setAttribute('data-titolo', '" . htmlspecialchars($titolo) . "');";
-            echo "p.setAttribute('data-id', '" . htmlspecialchars($id) . "');";
-            echo "p.setAttribute('data-descrizione', '" . htmlspecialchars($descrizione) . "');";
-            echo "p.setAttribute('data-stato', '" . htmlspecialchars($stato) . "');";
-            echo "p.setAttribute('data-utente', '" . htmlspecialchars($utente) . "');";
-            echo "p.setAttribute('data-task', '" . htmlspecialchars($task) . "');";
+            echo "p.setAttribute('data-titolo', '" . $titolo . "');";
+            echo "p.setAttribute('data-id', '" . $id . "');";
+            echo "p.setAttribute('data-descrizione', '" . $descrizione . "');";
+            echo "p.setAttribute('data-stato', '" . $stato . "');";
+            echo "p.setAttribute('data-utente', '" . $utente . "');";
+            echo "p.setAttribute('data-task', '" . $task . "');";
             echo "p.innerText = '$titolo';";
             echo "p.className = 'task';";
             echo "p.id='$id';";
