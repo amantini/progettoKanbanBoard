@@ -19,11 +19,6 @@ if (!isset($_SESSION["credenziali"])) {
 <body>
     <div class="pagina">
         <div class="forms-container">
-            <form id="form">
-                <input type="text" placeholder="Nuova attività..." id="attivitaInput" required />
-                <input type="text" placeholder="Descrizione..." id="descrizioneInput" required />
-                <button type="submit" onclick="aggiungiTask()" id="bottoneAggiungi">Aggiungi +</button>
-            </form>
             <form action="logout.php" method="POST" id="logout">
                 <button type="submit">Logout</button>
             </form>
@@ -31,7 +26,7 @@ if (!isset($_SESSION["credenziali"])) {
         <div class="tab" ondragover="permettiDrop(event)" draggable="false">
             <div class="colonna" ondrop="drop(event)" id="col1" ondragover="permettiDrop(event)">
                 <h3 class="titolo">Da Fare</h3>
-                <button>+</button>
+                <button class="btn-aggiungi">+</button>
             </div>
             <div class="colonna" ondrop="drop(event)" id="col2" ondragover="permettiDrop(event)">
                 <h3 class="titolo">In Esecuzione</h3>
@@ -42,6 +37,17 @@ if (!isset($_SESSION["credenziali"])) {
             <div class="colonna" ondrop="drop(event)" id="col4" ondragover="permettiDrop(event)">
                 <h3 class="titolo">Terminato</h3>
             </div>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form id="form">
+                <input type="text" placeholder="Nuova attività..." id="attivitaInput" required />
+                <input type="text" placeholder="Descrizione..." id="descrizioneInput" required />
+                <button type="submit" id="bottoneAggiungi">Aggiungi +</button>
+            </form>
         </div>
     </div>
     <?php
@@ -183,15 +189,15 @@ if (!isset($_SESSION["credenziali"])) {
                 var utente = elementoSelezionato.dataset.utente;
                 var task = parseInt(elementoSelezionato.dataset.task);
                 const div = document.getElementById("div" + event.target.id);
-                const descrizione = document.getElementById("descrizione" + event.target.id); 
+                const descrizione = document.getElementById("descrizione" + event.target.id);
                 if (num === 0) {
                     div.style.display = "block";
                     document.addEventListener("dblclick", function(doubleClickEvent) {
                         if (doubleClickEvent.target.tagName.toLowerCase() === 'p' && doubleClickEvent.target.classList.contains('descrizione-task')) {
                             if (doubleClickEvent.target.contentEditable === 'true') {
-                                doubleClickEvent.target.contentEditable = false; 
+                                doubleClickEvent.target.contentEditable = false;
                             } else {
-                                doubleClickEvent.target.contentEditable = true; 
+                                doubleClickEvent.target.contentEditable = true;
                             }
                             doubleClickEvent.target.focus();
                         }
@@ -199,7 +205,7 @@ if (!isset($_SESSION["credenziali"])) {
 
                     descrizione.addEventListener("keydown", function(keyEvent) {
                         if (keyEvent.key === "Enter") {
-                            keyEvent.preventDefault(); 
+                            keyEvent.preventDefault();
                             inviaDati(descrizione.innerText, stato, utente, task);
                             const descrizioneElementi = document.querySelectorAll('.descrizione-task');
                             descrizioneElementi.forEach(desc => {
@@ -250,6 +256,32 @@ if (!isset($_SESSION["credenziali"])) {
                         "Content-type": "application/json; charset=UTF-8"
                     }
                 });
+            }
+        }
+
+        // Ottieni il modal
+        var modal = document.getElementById("myModal");
+
+        // Ottieni il pulsante che apre il modal
+        var btn = document.querySelector(".btn-aggiungi");
+
+        // Ottieni l'elemento per chiudere il modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // Quando l'utente clicca sul pulsante, apri il modal
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // Quando l'utente clicca sull'elemento di chiusura, chiudi il modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Quando l'utente clicca ovunque al di fuori del modal, chiudi il modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
             }
         }
     </script>
