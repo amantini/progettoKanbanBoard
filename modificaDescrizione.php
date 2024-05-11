@@ -7,13 +7,15 @@ if (!$conn) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     $dati_json = file_get_contents('php://input');
     $dati_decodificati = json_decode($dati_json, true);
-    $contenuto = mysqli_real_escape_string($conn, $dati_decodificati['contenuto']);
+    
+    $stato = mysqli_real_escape_string($conn, $dati_decodificati['stato']);
     $descrizione = mysqli_real_escape_string($conn, $dati_decodificati['descrizione']);
-    $id = mysqli_real_escape_string($conn, $dati_decodificati['id']);
-    $sql = "UPDATE stati SET nome = '$contenuto', descrizione = '$descrizione' WHERE id = $id";
+    $utente = mysqli_real_escape_string($conn, $dati_decodificati['utente']);
+    $task = mysqli_real_escape_string($conn, $dati_decodificati['task']);
+
+    $sql = "INSERT INTO modifiche (fk_stato,descrizione,fk_utente,fk_task) VALUES ($stato, '$descrizione', '$utente', $task);";
     if (mysqli_query($conn, $sql)) {
         echo "Successo";
     } else {

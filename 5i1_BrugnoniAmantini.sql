@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 10, 2024 alle 21:03
+-- Creato il: Mag 11, 2024 alle 17:18
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.0.30
 
@@ -42,13 +42,24 @@ CREATE TABLE `modifiche` (
 --
 
 INSERT INTO `modifiche` (`id`, `data`, `ora`, `descrizione`, `fk_utente`, `fk_stato`, `fk_task`) VALUES
-(20, '2024-05-10', '17:43:02', 'Andare al parco col cane e farlo camminare', 'Kemy', 1, 85),
-(21, '2024-05-10', '17:53:03', 'Yoga con listruttore Marco', 'Kemy', 1, 86),
-(22, '2024-05-10', '18:10:09', 'Materia TPSIT', 'Kemy', 1, 87),
-(23, '2024-05-10', '18:11:15', 'Cercare di dimagrire', 'Kemy', 1, 88),
-(24, '2024-05-10', '18:14:31', 'Facciamo festa tra di noi', 'amantini', 1, 89),
-(25, '2024-05-10', '18:20:11', 'Andare al parco col cane e farlo camminare', 'Kemy', 2, 85),
-(28, '2024-05-10', '18:57:09', 'Materia TPSIT', 'amantini', 1, 87);
+(71, '2024-05-11', '12:22:50', 'Col maestro di yoga', 'Kemy', 1, 90),
+(72, '2024-05-11', '12:23:25', 'Col maestro di yoga', 'amantini', 2, 90),
+(73, '2024-05-11', '12:25:18', 'Col maestro di yoga', 'Kemy', 3, 90),
+(74, '2024-05-11', '12:31:07', 'Aggiustare la scrivania per lo zio pippo', 'Kemy', 1, 91),
+(75, '2024-05-11', '12:31:17', 'Materia TPSIT', 'Kemy', 1, 92),
+(76, '2024-05-11', '12:31:25', 'Cercare di dimagrire', 'Kemy', 1, 93),
+(77, '2024-05-11', '12:31:36', 'Facciamo festa ', 'Kemy', 1, 94),
+(78, '2024-05-11', '12:31:59', 'Tavolo della cucina rotto', 'Kemy', 1, 95),
+(79, '2024-05-11', '12:32:48', 'Aggiustare la scrivania per lo zio pippo', 'Kemy', 2, 91),
+(80, '2024-05-11', '12:32:55', 'Facciamo festa ', 'Kemy', 2, 94),
+(81, '2024-05-11', '12:33:12', 'Aggiustare la scrivania per lo zio pippo', 'amantini', 3, 91),
+(82, '2024-05-11', '12:33:13', 'Materia TPSIT', 'amantini', 2, 92),
+(141, '2024-05-11', '16:35:55', 'Cercare di dimagrire un passo alla volta', 'amantini', 1, 93),
+(142, '2024-05-11', '16:36:29', 'Cercare di dimagrire un passo alla volta.', 'Kemy', 1, 93),
+(143, '2024-05-11', '16:43:40', '100 Pagine da studiare', 'amantini', 1, 96),
+(219, '2024-05-11', '16:49:26', '100 Pagine da studiaree', 'amantini', 1, 96),
+(220, '2024-05-11', '16:49:49', '100 Pagine da studiare', 'amantini', 1, 96),
+(221, '2024-05-11', '17:13:57', 'Pagina da finire', 'amantini', 1, 97);
 
 -- --------------------------------------------------------
 
@@ -79,7 +90,7 @@ INSERT INTO `stati` (`stato`, `descrizione`) VALUES
 
 CREATE TABLE `task` (
   `id` int(11) NOT NULL,
-  `titolo` varchar(20) NOT NULL
+  `titolo` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -87,11 +98,14 @@ CREATE TABLE `task` (
 --
 
 INSERT INTO `task` (`id`, `titolo`) VALUES
-(85, 'Andare al parco'),
-(86, 'Fare yoga'),
-(87, 'Prendere appunti'),
-(88, 'Andare dal nutrizion'),
-(89, 'Andare al mare');
+(90, 'Fare yoga'),
+(91, 'Aggiustare Scrivania'),
+(92, 'Prendere appunti'),
+(93, 'Andare dal nutrizionista'),
+(94, 'Andare al mare'),
+(95, 'Sistemare il tavolo'),
+(96, 'Studiare GPOI'),
+(97, 'Rielabolare css');
 
 -- --------------------------------------------------------
 
@@ -153,13 +167,13 @@ ALTER TABLE `utenti`
 -- AUTO_INCREMENT per la tabella `modifiche`
 --
 ALTER TABLE `modifiche`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222;
 
 --
 -- AUTO_INCREMENT per la tabella `task`
 --
 ALTER TABLE `task`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- Limiti per le tabelle scaricate

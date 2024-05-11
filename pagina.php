@@ -1,5 +1,4 @@
 <?php
-// FIX!
 session_start();
 if (!isset($_SESSION["credenziali"])) {
     header("Location: indice.php");
@@ -32,6 +31,7 @@ if (!isset($_SESSION["credenziali"])) {
         <div class="tab" ondragover="permettiDrop(event)" draggable="false">
             <div class="colonna" ondrop="drop(event)" id="col1" ondragover="permettiDrop(event)">
                 <h3 class="titolo">Da Fare</h3>
+                <button>+</button>
             </div>
             <div class="colonna" ondrop="drop(event)" id="col2" ondragover="permettiDrop(event)">
                 <h3 class="titolo">In Esecuzione</h3>
@@ -48,15 +48,15 @@ if (!isset($_SESSION["credenziali"])) {
     $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
     //$conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
     $sql = "SELECT  task.titolo, modifiche.*
-            FROM task,  modifiche, utenti
-                WHERE fk_utente = utenti.username
-                AND fk_task = task.id
-                AND (task.id, utenti.username, modifiche.id) IN 
-                (
-                    SELECT modifiche.fk_task, modifiche.fk_utente, MAX(modifiche.id) as max_id
-                    FROM modifiche
-                    GROUP BY modifiche.fk_task, modifiche.fk_utente
-                );";
+                        FROM task,  modifiche, utenti
+                            WHERE fk_utente = utenti.username
+                            AND fk_task = task.id
+                            AND (task.id, modifiche.id) IN 
+                            (
+                                SELECT modifiche.fk_task , MAX(modifiche.id) as max_id
+                                FROM modifiche
+                                GROUP BY modifiche.fk_task
+                            );";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         // creo contatore perché ho bisogno che ogni paragrafo abbia un id
@@ -65,13 +65,14 @@ if (!isset($_SESSION["credenziali"])) {
         while ($row = mysqli_fetch_assoc($result)) {
             $titolo = $row['titolo'];
             $id = $row['id'];
+            $ora = $row['ora'];
+            $data = $row['data'];
             $descrizione = $row['descrizione'];
             $stato = $row['fk_stato'];
             $utente = $_SESSION["credenziali"];
             $task = $row['fk_task'];
             echo "<script>";
-            // creo un paragrafo impostando il testo, la classe (per il css), l'id (utile per il drag)
-            // e le principali funzioni essenziali 
+            // Creo un paragrafo per il titolo dell'attività
             echo "var p = document.createElement('p');";
             echo "p.setAttribute('data-titolo', '" . htmlspecialchars($titolo) . "');";
             echo "p.setAttribute('data-id', '" . htmlspecialchars($id) . "');";
@@ -84,31 +85,33 @@ if (!isset($_SESSION["credenziali"])) {
             echo "p.id='$id';";
             echo "p.draggable = true;";
             echo "p.style.cursor = 'move';";
-            echo "p.onclick = 
-                        function(event) {
-                            mostraDescrizione(event); 
-                        };";
-            echo "p.ondragstart = 
-                        function(event) { 
-                            drag(event); 
-                        };";
-            echo "p.onmousedown = function(event) { modifica(event);};";
-            echo "var descrizione = document.createElement('p');";
-            echo "descrizione.id='descrizione$id';";
-            echo "descrizione.style.display='none';";
-            echo "descrizione.innerText = '" . $descrizione . "';";
-            // per organizzare le attività nelle colonne uso lo stato come indice
+            echo "p.onclick = function(event) { mostraModificaDescrizione(event); };";
+            echo "p.ondragstart = function(event) { drag(event); };";
             echo "var cella = document.getElementById('col$stato');";
-            echo "var titoloDesc= document.createElement('h5');";
-            echo "titoloDesc.id='titoloDesc$id';";
-            echo "titoloDesc.innerText='Descrizione';";
-            echo "titoloDesc.style.display='none';";
-            echo "titoloDesc.style.paddingTop='1em';";
-            echo "titoloDesc.className = 'desc-titolo';";
-            // aggiungo al padre "cella" ogni paragrafo figlio
-            echo "p.appendChild(titoloDesc);";
-            echo "p.appendChild(descrizione);";
+            // Creo un div per contenere la descrizione
+            echo "var div = document.createElement('div');";
+            echo "div.id = 'div$id';"; // Imposto un ID univoco per il div
+            echo "div.className = 'info-container';"; // Aggiungo una classe al div
+
+            // Creo un paragrafo per la descrizione
+            echo "var descrizione = document.createElement('p');";
+            echo "descrizione.id = 'descrizione$id';"; // Imposto un ID univoco per la descrizione
+            echo "descrizione.className='descrizione-task';";
+            echo "div.style.display='none';";
+            echo "descrizione.innerText = '" . $descrizione . "';";
+
+            // Creo un titolo per la descrizione
+            echo "var titoloDesc = document.createElement('h5');";
+            echo "titoloDesc.id = 'titoloDesc$id';"; // Imposto un ID univoco per il titolo della descrizione
+            echo "titoloDesc.innerText = 'Descrizione';";
+            echo "titoloDesc.style.paddingTop = '1em';";
+            // Aggiungo la descrizione e il titolo della descrizione come figli del div
+            echo "div.appendChild(titoloDesc);";
+            echo "div.appendChild(descrizione);";
+
+            // Aggiungo il div e il paragrafo alla colonna
             echo "cella.appendChild(p);";
+            echo "p.appendChild(div);";
             echo "</script>";
         }
     }
@@ -130,18 +133,16 @@ if (!isset($_SESSION["credenziali"])) {
             event.preventDefault();
             var data = event.dataTransfer.getData("text");
             var elementoSelezionato = document.getElementById(data);
-            // cerco, se esiste, la più vicina colonna dove lasciare l'elemento
             var colonnaRilascio = event.target.closest('.colonna');
-            // se esiste
             if (colonnaRilascio != null) {
                 var idColonnaCorrente = elementoSelezionato.parentElement.id;
-                // controllo per spostarla solo avanti e non indietro!
                 if (parseInt(colonnaRilascio.id.replace('col', '')) > parseInt(idColonnaCorrente.replace('col', ''))) {
                     colonnaRilascio.appendChild(elementoSelezionato);
                     rilascio(data);
                 }
             }
         }
+
         async function rilascio(data) {
             var elementoSelezionato = document.getElementById(data);
             var id = parseInt(elementoSelezionato.dataset.id);
@@ -149,13 +150,11 @@ if (!isset($_SESSION["credenziali"])) {
             var stato = parseInt(elementoSelezionato.dataset.stato);
             var utente = elementoSelezionato.dataset.utente;
             var task = elementoSelezionato.dataset.task;
-
             console.log("ID:", id);
             console.log("Descrizione:", descrizione);
             console.log("Stato:", stato);
             console.log("Utente:", utente);
             console.log("Task:", task);
-
             const risposta = await fetch(`modifica.php`, {
                 method: "POST",
                 body: JSON.stringify({
@@ -170,76 +169,67 @@ if (!isset($_SESSION["credenziali"])) {
                 }
             });
         }
+
         // ----TODO descrizione dell'attività al click, non scompare e ricompare come dovrebbe, problema con i child
         var num = 0;
 
-        function mostraDescrizione(event) {
-            if (num === 0) {
+        function mostraModificaDescrizione(event) {
+            const vettoreDiv = document.querySelectorAll('.info-container');
+            const descrizione = document.getElementById("descrizione" + event.target.id);
+            if (event.target.tagName.toLowerCase() === 'p' && event.target.classList.contains('task')) {
                 const p = document.getElementById(event.target.id);
-                const titoloDescrizione = document.getElementById("titoloDesc" + event.target.id);
-                const descrizione = document.getElementById("descrizione" + event.target.id);
-                if (descrizione.style.display === "none" || descrizione.style.display === "") {
-                    titoloDescrizione.style.display = "block";
-                    descrizione.style.display = "block";
+                var elementoSelezionato = document.getElementById(event.target.id);
+                var stato = parseInt(elementoSelezionato.dataset.stato);
+                var utente = elementoSelezionato.dataset.utente;
+                var task = parseInt(elementoSelezionato.dataset.task);
+                const div = document.getElementById("div" + event.target.id);
+                const descrizione = document.getElementById("descrizione" + event.target.id); 
+                if (num === 0) {
+                    div.style.display = "block";
+                    document.addEventListener("dblclick", function(doubleClickEvent) {
+                        if (doubleClickEvent.target.tagName.toLowerCase() === 'p' && doubleClickEvent.target.classList.contains('descrizione-task')) {
+                            if (doubleClickEvent.target.contentEditable === 'true') {
+                                doubleClickEvent.target.contentEditable = false; 
+                            } else {
+                                doubleClickEvent.target.contentEditable = true; 
+                            }
+                            doubleClickEvent.target.focus();
+                        }
+                    });
+
+                    descrizione.addEventListener("keydown", function(keyEvent) {
+                        if (keyEvent.key === "Enter") {
+                            keyEvent.preventDefault(); 
+                            inviaDati(descrizione.innerText, stato, utente, task);
+                            const descrizioneElementi = document.querySelectorAll('.descrizione-task');
+                            descrizioneElementi.forEach(desc => {
+                                desc.style.contentEditable = false;
+                            });
+                        }
+                    });
+
+                    num++;
+                } else {
+                    vettoreDiv.forEach(desc => {
+                        desc.style.display = "none";
+                    });
+                    num = 0;
                 }
-                num++;
-            } else {
-                const allDescrizioni = document.querySelectorAll('[id^="descrizione"]');
-                const allTitoli = document.querySelectorAll('[id^="titoloDesc"]');
-                allDescrizioni.forEach(desc => {
-                    desc.style.display = "none";
-                });
-                allTitoli.forEach(titolo => {
-                    titolo.style.display = "none";
-                });
-                num = 0;
             }
+
+
+
         }
 
-        document.addEventListener("contextmenu", function(event) {
-            if (event.target.tagName.toLowerCase() === "p" || event.target.tagName.toLowerCase() === "h5") {
-                event.preventDefault();
-            }
-        });
-
-        function modifica(event) {
-            var id = parseInt(event.target.id);
-            if (event.button == 2) {
-                const p = document.getElementById(event.target.id);
-                const titolo = document.getElementById("titoloDesc" + event.target.id)
-                const descrizione = document.getElementById("descrizione" + id);
-                p.style.display = "block";
-                titolo.style.display = "block";
-                descrizione.style.display = "block";
-                p.contentEditable = true;
-                const allTitoli = document.querySelectorAll('[id^="titoloDesc"]');
-                allTitoli.forEach(titolo => {
-                    titolo.contentEditable = false;
-                });
-                p.addEventListener("keydown", function(event) {
-                    if (event.keyCode === 13) {
-                        event.preventDefault();
-                        p.contentEditable = false;
-                        var contenuto = p.innerText.split('\n')[0].trim();
-                        var contenutoDescrizione = descrizione.innerText;
-                        inviaModificaAtt(contenuto, contenutoDescrizione, id);
-                        p.style.display = "block";
-                        titolo.style.display = "none";
-                        descrizione.style.display = "none";
-                    }
-                });
-            }
-        }
-        async function inviaModificaAtt(contenuto, contenutoDescrizione, id) {
-            var inviaContenuto = contenuto;
+        async function inviaDati(contenutoDescrizione, stato, utente, task) {
             var inviaDescrizione = contenutoDescrizione;
-            var inviaId = id;
-            const risposta = await fetch(`modificaAttivita.php`, {
+            const risposta = await fetch(`modificaDescrizione.php`, {
                 method: "POST",
                 body: JSON.stringify({
-                    contenuto: inviaContenuto,
                     descrizione: inviaDescrizione,
-                    id: inviaId
+                    stato: stato,
+                    utente: utente,
+                    task: task
                 }),
                 headers: {
                     "Content-type": "application/json; charset=UTF-8"

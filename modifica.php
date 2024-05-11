@@ -17,7 +17,7 @@ $stato = $dati['stato'] + 1;
 $utente = mysqli_real_escape_string($conn, $dati['utente']);
 $task = mysqli_real_escape_string($conn, $dati['task']);
 
-$sql = "INSERT INTO modifiche ( descrizione, fk_stato, fk_utente, fk_task) 
+$sql = "INSERT INTO modifiche (descrizione, fk_stato, fk_utente, fk_task) 
         VALUES ('$descrizione', $stato, '$utente', '$task')";
 
 if (mysqli_query($conn, $sql)) {
