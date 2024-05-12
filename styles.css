@@ -13,31 +13,38 @@ body{
   height: 100vh;
   background-position: center;
   background-size: cover;
+  box-shadow: 10px 5px 15px rgba(0, 0, 0, 0.25);
 }
 
 #col1 {
   background-color: rgb(218, 82, 82);
+  border-top: 4px solid red;
+  border-bottom: 4px solid red;
 }
 
 #col2 {
   background-color: #F29F05;
+  border-top: 4px solid #b98119;
+  border-bottom: 4px solid #b98119;
 }
 
 #col3 {
   background-color: #59D99D;
+  border-top: 4px solid green;
+  border-bottom: 4px solid green;
 }
 
 #col4 {
   background-color: #04C4D9;
+  border-top: 4px solid rgb(7, 114, 177);
+  border-bottom: 4px solid rgb(7, 114, 177);
 }
 
 h2 {
   padding-bottom: 1em;
 }
 
-#all {
-  background-color: rgb(238, 238, 238);
-}
+
 
 .header h3 {
   margin-right: auto;
@@ -80,19 +87,23 @@ h2 {
  button:active {
   background-color: #aaaaaa;
 }
-
+h1{
+  color:white;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 20px;
+}
+#logout{
+  box-shadow: none;
+}
 .tab {
-  /* Your existing styles */
-  background-color: #FFFFFF;
+  background-color: #ebebeb;
   border-radius: 10px;
   display: flex;
   align-items: flex-start;
   justify-content: start;
   gap: 16px;
   padding: 100px 100px;
-  /* Set width to fit content or desired width */
   width: fit-content;
-  /* Position the .tab element at the top center */
   position:absolute;
   top: 10%;
   left: 50%;
@@ -182,11 +193,14 @@ h2 {
   cursor: pointer;
 }
 
-.form-container {
+.forms-container {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: space-between; 
+  margin-left: 20%; 
+  margin-right: 19%; 
 }
+
+
 
 .form-container input {
   width: 100%;
@@ -206,18 +220,12 @@ h2 {
   padding: 12px 32px;
   border-radius: 7px;
   border: none;
-  box-shadow: 5px 5px 15px rgba(10, 10, 10, 0.75);
+  box-shadow: none;
   background: #ffffff;
   color: black;
   font-weight: bold;
   font-size: 14px;
 }
-.forms-container {
-  display: flex;
-  justify-content: space-between; 
-  align-items: center; 
-}
-
 .modal {
   display: none; /* Nascondi il modal di default */
   position: fixed; /* Posizionamento fisso */

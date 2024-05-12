@@ -19,10 +19,14 @@ if (!isset($_SESSION["credenziali"])) {
 <body>
     <div class="pagina">
         <div class="forms-container">
+            <h1>KanbanBoard</h1>
             <form action="logout.php" method="POST" id="logout">
-                <button type="submit">Logout</button>
+                <button type="submit" id="logout" style="background: none; border: none; cursor: pointer;">
+                    <img src="omino.png" alt="Logout" style="width: 50px; height: 20x;"><p style="color:white;"><?php echo $_SESSION["credenziali"]; ?></p>
+                </button>
             </form>
         </div>
+
         <div class="tab" ondragover="permettiDrop(event)" draggable="false">
             <div class="colonna" ondrop="drop(event)" id="col1" ondragover="permettiDrop(event)">
                 <h3 class="titolo">Da Fare</h3>
@@ -39,17 +43,17 @@ if (!isset($_SESSION["credenziali"])) {
             </div>
         </div>
 
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <form id="form">
-                <input type="text" placeholder="Nuova attività..." id="attivitaInput" required />
-                <input type="text" placeholder="Descrizione..." id="descrizioneInput" required />
-                <button type="submit" id="bottoneAggiungi" onclick="aggiungiTask()">Aggiungi +</button>
-            </form>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form id="form">
+                    <input type="text" placeholder="Nuova attività..." id="attivitaInput" required />
+                    <input type="text" placeholder="Descrizione..." id="descrizioneInput" required />
+                    <button type="submit" id="bottoneAggiungi" onclick="aggiungiTask()">Aggiungi +</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
     <?php
     $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
     //$conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
