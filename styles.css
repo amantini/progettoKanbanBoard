@@ -1,13 +1,18 @@
+/* Reset CSS */
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
 }
-body{
+
+/* Body */
+body {
   background-color: #273D59;
-  overflow:inherit;
+  overflow: inherit;
 }
+
+/* Pagina */
 .pagina {
   width: 100%;
   height: 100vh;
@@ -16,49 +21,81 @@ body{
   box-shadow: 10px 5px 15px rgba(0, 0, 0, 0.25);
 }
 
+/* Colonne */
+#col1, #col2, #col3, #col4 {
+  border-top-width: 4px;
+  border-bottom-width: 4px;
+}
+
+/* Colonna 1 */
 #col1 {
   background-color: rgb(218, 82, 82);
-  border-top: 4px solid red;
-  border-bottom: 4px solid red;
+  border-color: red;
 }
 
+/* Colonna 2 */
 #col2 {
   background-color: #F29F05;
-  border-top: 4px solid #b98119;
-  border-bottom: 4px solid #b98119;
+  border-color: #b98119;
 }
 
+/* Colonna 3 */
 #col3 {
   background-color: #59D99D;
-  border-top: 4px solid green;
-  border-bottom: 4px solid green;
+  border-color: green;
 }
 
+/* Colonna 4 */
 #col4 {
   background-color: #04C4D9;
-  border-top: 4px solid rgb(7, 114, 177);
-  border-bottom: 4px solid rgb(7, 114, 177);
+  border-color: rgb(7, 114, 177);
 }
 
-.span-col {
-  align-self: flex-end; /* Align the span to the bottom */
-}
+/* Titoli */
 h2 {
   padding-bottom: 1em;
 }
 
+/* Pulsanti */
+.btn-aggiungi, button {
+  padding: 12px 32px;
+  border-radius: 7px;
+  border: none;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+  background: #ffffff;
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Pulsante "Aggiungi" */
 .btn-aggiungi {
   background-color: rgb(255, 168, 168);
 }
 
+/* Intestazione */
+.header {
+  padding: 20px;
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Intestazione h3 */
 .header h3 {
   margin-right: auto;
   margin-top: auto;
 }
-#form h2{
+
+/* Form */
+#form h2 {
   margin-left: 10px;
 }
-#form input {
+
+/* Input */
+#form input[type="text"] {
   padding: 12px;
   margin-right: 12px;
   width: 225px;
@@ -70,38 +107,7 @@ h2 {
   outline: none;
 }
 
- button {
-  padding: 12px 32px;
-  border-radius: 7px;
-  border: none;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
-  background: #ffffff;
-  color: black;
-  font-weight: bold;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;/
-}
-
- button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
- button:hover {
-  background-color: #dddddd;
-}
-
- button:active {
-  background-color: #aaaaaa;
-}
-h1{
-  color:white;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin-top: 20px;
-}
-#logout{
-  box-shadow: none;
-}
+/* Tab */
 .tab {
   background-color: #ebebeb;
   border-radius: 10px;
@@ -117,15 +123,10 @@ h1{
   transform: translateX(-50%);
 }
 
-.titolo {
-  font-size: 22px;
-  font-weight: bold;
-}
-
+/* Colonne */
 .colonna {
   display: flex;
   flex-direction: column;
-  
   gap: 12px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
   padding: 12px;
@@ -135,6 +136,7 @@ h1{
   flex-shrink: 0;
 }
 
+/* Task */
 .task {
   background: white;
   color: black;
@@ -145,34 +147,15 @@ h1{
   cursor: move;
 }
 
-.header {
-  padding: 20px;
-  margin-left: 12px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.header button {
-  margin-left: 10px;
-  padding: 12px 32px;
-  border-radius: 7px;
-  border: none;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
-  background: #ffffff;
-  color: black;
-  font-weight: bold;
-  font-size: 14px;
-}
-
+/* Form Container */
 .forms-container {
   display: flex;
-  justify-content: space-between; 
-  margin-left: 20%; 
-  margin-right: 20%; 
+  justify-content: space-between;
+  margin-left: 20%;
+  margin-right: 20%;
 }
 
-
-
+/* Form */
 .form-container input {
   width: 100%;
   padding: 10px;
@@ -182,10 +165,7 @@ h1{
   outline: none;
 }
 
-.form-container input:focus {
-  border-bottom-color: black;
-}
-
+/* Form Button */
 .form-container button {
   margin-top: 20px;
   padding: 12px 32px;
@@ -197,6 +177,8 @@ h1{
   font-weight: bold;
   font-size: 14px;
 }
+
+/* Modal */
 .modal {
   display: none;
   position: fixed;
@@ -210,36 +192,38 @@ h1{
   backdrop-filter: blur(5px);
 }
 
-#myModal input[type="text"],
-#myModal input[type="password"] {
+/* Modal Input */
+#myModal input[type="text"], #myModal input[type="password"] {
   display: block;
   margin-bottom: 20px;
-  width: calc(100% - 20px); /* Riduci leggermente la larghezza per compensare il padding */
-  padding: 12px; /* Aumenta il padding per una migliore esperienza utente */
-  border: 1px solid #ccc; /* Aggiungi bordo sottile per evidenziare gli input */
-  border-radius: 6px; /* Arrotonda gli angoli degli input */
+  width: calc(100% - 20px);
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   box-sizing: border-box;
-  transition: border-color 0.3s ease-in-out; /* Aggiungi transizione per un effetto più fluido */
+  transition: border-color 0.3s ease-in-out;
 }
 
-#myModal input[type="text"]:focus,
-#myModal input[type="password"]:focus {
-  border-color: #007bff; /* Cambia colore del bordo quando in focus */
+/* Modal Input Focus */
+#myModal input[type="text"]:focus, #myModal input[type="password"]:focus {
+  border-color: #007bff;
   outline: none;
 }
 
+/* Modal Content */
 .modal-content {
   background-color: #fefefe;
   margin: 10% auto;
-  padding: 40px; /* Aumenta il padding per rendere il riquadro più grande */
+  padding: 40px;
   border-radius: 12px;
-  width: 90%; /* Riduci la larghezza del modal per farlo sembrare più grande */
-  max-width: 500px; /* Aumenta la larghezza massima */
+  width: 90%;
+  max-width: 500px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: relative; /* Aggiungi posizione relativa */
-  animation: fadeInModal 0.3s ease-in-out; /* Aggiungi animazione al modal-content */
+  position: relative;
+  animation: fadeInModal 0.3s ease-in-out;
 }
 
+/* Modal Close */
 .close {
   color: #aaa;
   position: absolute;
@@ -250,12 +234,12 @@ h1{
   transition: color 0.3s ease-in-out;
 }
 
-#attivitaInput,
-#descrizioneInput {
+/* Attività Input, Descrizione Input */
+#attivitaInput, #descrizioneInput {
   display: block;
-  margin: 0 auto; /* Centra gli input orizzontalmente */
+  margin: 0 auto;
   margin-bottom: 20px;
-  width: calc(100% - 20px); /* Riduci leggermente la larghezza per compensare il padding */
+  width: calc(100% - 20px);
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -263,16 +247,17 @@ h1{
   transition: border-color 0.3s ease-in-out;
 }
 
-#attivitaInput:focus,
-#descrizioneInput:focus {
+/* Attività Input Focus, Descrizione Input Focus */
+#attivitaInput:focus, #descrizioneInput:focus {
   border-color: #007bff;
   outline: none;
 }
 
+/* Bottone Aggiungi */
 #bottoneAggiungi {
   display: block;
-  margin: 0 auto; /* Centra il pulsante */
-  width: calc(100% - 20px); /* Riduci leggermente la larghezza per compensare il padding */
+  margin: 0 auto;
+  width: calc(100% - 20px);
   padding: 12px;
   border: none;
   border-radius: 6px;
@@ -283,51 +268,12 @@ h1{
   transition: background-color 0.3s ease-in-out;
 }
 
+/* Bottone Aggiungi Hover */
 #bottoneAggiungi:hover {
   background-color: #0056b3;
 }
 
-
-/* Animazione per il modal-content */
-@keyframes fadeInModal {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-.close:hover,
-.close:focus {
-  color: #333; /* Cambia colore al passaggio del mouse */
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* Stile del pulsante Aggiungi */
-#bottoneAggiungi {
-  color: black;
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
-  background-color: #007bff;
-  color: black;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out; /* Aggiungi transizione per un effetto più fluido */
-}
-
-#bottoneAggiungi:hover {
-  background-color: #0056b3; /* Cambia colore al passaggio del mouse */
-  color: white;
-}
-
-
+/* Dropdown Button */
 .btn-drop {
   background-color: #3498DB;
   color: white;
@@ -338,29 +284,32 @@ h1{
   margin-top: 15px;
 }
 
+/* Dropdown Button Hover */
 .btn-drop:hover, .btn-drop:focus {
   background-color: #2980B9;
 }
 
-/* Style the dropdown container */
+/* Dropdown Container */
 .dropdown {
   position: relative;
   display: inline-block;
 }
 
+/* Dropdown Content */
 .dropdown-content {
   display: none;
   position: absolute;
-  top: calc(100% + 10px); /* Position below the dropdown */
+  top: calc(100% + 10px);
   left: 0;
   background-color: #f1f1f1;
   min-width: 200px;
   overflow: auto;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
-  z-index: 1; /* Ensure the dropdown is above other elements */
+  z-index: 1;
 }
 
+/* Dropdown Links */
 .dropdown-content a {
   color: #333;
   padding: 12px 16px;
@@ -369,29 +318,35 @@ h1{
   border-top: 1px solid #ddd;
 }
 
+/* Dropdown Links Hover */
 .dropdown-content a:hover {
   background-color: #ddd;
 }
 
-
-
+/* Dropdown Image */
 .dropdown img {
   width: 50px;
   height: 50px;
   margin: 10px;
 }
 
+/* Dropdown Paragraph */
 .dropdown p {
   margin: 10px;
   color: #666;
 }
 
+/* Dropdown Link Hover */
+.dropdown a:hover {
+  background-color: #ddd;
+}
 
+/* Show Dropdown */
+.show {
+  display: block;
+}
 
-.dropdown a:hover {background-color: #ddd;}
-
-.show {display: block;}
-
+/* Immagine Pannello */
 #img-pannello {
   width: 50px;
   height: 50px;

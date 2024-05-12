@@ -39,7 +39,8 @@ if (!isset($_SESSION["credenziali"])) {
                 <div id="div-dropdown" class="dropdown-content">
                     <img src="omino.png" width="90px" height="90px">
                     <p><?php echo "$nome $cognome" ?></p>
-                    <!--<p><?php //echo strtolower("$nome$cognome@gmail.com")?></p>!-->
+                    <!--<p><?php //echo strtolower("$nome$cognome@gmail.com")
+                            ?></p>!-->
                     <a href="gestioneaccount.php">Il mio account</a>
                     <a href="help.php">Aiuto</a>
                     <a href="logout.php">Logout</a>
@@ -144,7 +145,8 @@ if (!isset($_SESSION["credenziali"])) {
             echo "p.appendChild(div);";
             echo "</script>";
         }
-        echo "mostraQuante();";
+        echo "<script>";
+        echo "mostraQuante();"; echo "</script>";
     }
     ?>
     <script>
@@ -202,10 +204,7 @@ if (!isset($_SESSION["credenziali"])) {
                 }
             });
         }
-
-        // ----TODO descrizione dell'attività al click, non scompare e ricompare come dovrebbe, problema con i child
         var num = 0;
-
         function mostraModificaDescrizione(event) {
             const vettoreDiv = document.querySelectorAll('.info-container');
             const descrizione = document.getElementById("descrizione" + event.target.id);
@@ -219,41 +218,42 @@ if (!isset($_SESSION["credenziali"])) {
                 const descrizione = document.getElementById("descrizione" + event.target.id);
                 if (num === 0) {
                     div.style.display = "block";
-                    document.addEventListener("dblclick", function(doubleClickEvent) {
-                        if (doubleClickEvent.target.tagName.toLowerCase() === 'p' && doubleClickEvent.target.classList.contains('descrizione-task')) {
-                            if (doubleClickEvent.target.contentEditable === 'true') {
-                                doubleClickEvent.target.contentEditable = false;
-                            } else {
-                                doubleClickEvent.target.contentEditable = true;
-                            }
-                            doubleClickEvent.target.focus();
-                        }
-                    });
-
-                    descrizione.addEventListener("keydown", function(keyEvent) {
-                        if (keyEvent.key === "Enter") {
-                            keyEvent.preventDefault();
-                            inviaDati(descrizione.innerText, stato, utente, task);
-                            const descrizioneElementi = document.querySelectorAll('.descrizione-task');
-                            descrizioneElementi.forEach(desc => {
-                                desc.style.contentEditable = false;
-                            });
-                        }
-                    });
-
+                    document.addEventListener("dblclick", gestisciDoppioClicl);
+                    descrizione.addEventListener("keydown", gestisciInvio);
                     num++;
                 } else {
                     vettoreDiv.forEach(desc => {
                         desc.style.display = "none";
                     });
                     num = 0;
+                    document.removeEventListener("dblclick", gestisciDoppioClicl);
+                    descrizione.removeEventListener("keydown", gestisciInvio);
                 }
             }
 
+            function gestisciDoppioClicl(event) {
+                if (event.target.tagName.toLowerCase() === 'p' && event.target.classList.contains('descrizione-task')) {
+                    if (event.target.contentEditable === 'true') {
+                        event.target.contentEditable = false;
+                    } else {
+                        event.target.contentEditable = true;
+                    }
+                    event.target.focus();
+                }
+            }
 
+            function gestisciInvio(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    const descrizioneElementi = document.querySelectorAll('.descrizione-task');
+                    descrizioneElementi.forEach(desc => {
+                        desc.blur();
+                    });
+                    inviaDati(descrizione.innerText, stato, utente, task);
 
+                }
+            }
         }
-
         async function inviaDati(contenutoDescrizione, stato, utente, task) {
             var inviaDescrizione = contenutoDescrizione;
             const risposta = await fetch(`modificaDescrizione.php`, {
@@ -305,8 +305,6 @@ if (!isset($_SESSION["credenziali"])) {
         function dropdown() {
             document.getElementById("div-dropdown").classList.toggle("show");
         }
-
-        // Close the dropdown if the user clicks outside of it
         window.onclick = function(event) {
             if (!event.target.matches('.btn-drop')) {
                 var dropdowns = document.getElementsByClassName("dropdown-content");
