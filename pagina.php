@@ -20,13 +20,28 @@ if (!isset($_SESSION["credenziali"])) {
 </head>
 
 <body>
+    <?php
+    $utente = $_SESSION["credenziali"];
+    $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
+    $sql = "SELECT * FROM utenti WHERE username='$utente'";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_array($result);
+        $nome = $row['nome'];
+        $cognome = $row['cognome'];
+    }
+    ?>
     <div class="pagina">
         <div class="forms-container">
             <h1>KanbanBoard</h1>
             <div class="dropdown">
-                <button onclick="dropdown()" class="btn-drop"><?php echo $_SESSION["credenziali"]?></button>
+                <button onclick="dropdown()" class="btn-drop"><?php echo $utente ?></button>
                 <div id="div-dropdown" class="dropdown-content">
+                    <img src="omino.png" width="90px" height="90px">
+                    <p><?php echo "$nome $cognome" ?></p>
+                    <!--<p><?php //echo strtolower("$nome$cognome@gmail.com")?></p>!-->
                     <a href="gestioneaccount.php">Il mio account</a>
+                    <a href="help.php">Aiuto</a>
                     <a href="logout.php">Logout</a>
                 </div>
             </div>
@@ -34,25 +49,26 @@ if (!isset($_SESSION["credenziali"])) {
 
         <div class="tab" ondragover="permettiDrop(event)" draggable="false">
             <div class="colonna" ondrop="drop(event)" id="col1" ondragover="permettiDrop(event)">
-                <h3 class="titolo">Da Fare <span class="span-col" id="span-dafare">3</span></h3>
+                <h3 class="titolo">Da Fare <span class="span-col" id="span1"></span></h3>
                 <button class="btn-aggiungi">+</button>
             </div>
             <div class="colonna" ondrop="drop(event)" id="col2" ondragover="permettiDrop(event)">
-                <h3 class="titolo">In Esecuzione <span class="span-col" id="span-esecuzione">1</span></h3>
+                <h3 class="titolo">In Esecuzione <span class="span-col" id="span2"></span></h3>
             </div>
             <div class="colonna" ondrop="drop(event)" id="col3" ondragover="permettiDrop(event)">
-                <h3 class="titolo">Fatto <span class="span-col" id="span-fatto">2</span></h3>
+                <h3 class="titolo">Fatto <span class="span-col" id="span3"></span></h3>
             </div>
             <div class="colonna" ondrop="drop(event)" id="col4" ondragover="permettiDrop(event)">
-                <h3 class="titolo">Terminato <span class="span-col" id="span-terminato">3</span></h3>
+                <h3 class="titolo">Terminato <span class="span-col" id="span4"></span></h3>
             </div>
         </div>
-
         <div id="myModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <form id="form">
+                <form id="form" action="pagina.php">
+                    <h2>Aggiungi attività </h2>
                     <input type="text" placeholder="Nuova attività..." id="attivitaInput" required />
+                    <h2>Aggiungi descrizione</h2>
                     <input type="text" placeholder="Descrizione..." id="descrizioneInput" required />
                     <button type="submit" id="bottoneAggiungi" onclick="aggiungiTask()">Aggiungi +</button>
                 </form>
@@ -60,7 +76,6 @@ if (!isset($_SESSION["credenziali"])) {
         </div>
     </div>
     <?php
-    $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
     //$conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
     $sql = "SELECT  task.titolo, modifiche.*
                         FROM task,  modifiche, utenti
@@ -129,10 +144,12 @@ if (!isset($_SESSION["credenziali"])) {
             echo "p.appendChild(div);";
             echo "</script>";
         }
+        echo "mostraQuante();";
     }
     ?>
     <script>
         'use strict';
+        mostraQuante();
 
         function permettiDrop(event) {
             // visto che gli oggetti non sono di base trascinabili, stabilisco quelli che lo sono
@@ -153,6 +170,7 @@ if (!isset($_SESSION["credenziali"])) {
                 var idColonnaCorrente = elementoSelezionato.parentElement.id;
                 if (parseInt(colonnaRilascio.id.replace('col', '')) > parseInt(idColonnaCorrente.replace('col', ''))) {
                     colonnaRilascio.appendChild(elementoSelezionato);
+                    mostraQuante();
                     rilascio(data);
                 }
             }
@@ -269,27 +287,15 @@ if (!isset($_SESSION["credenziali"])) {
                 });
             }
         }
-
-        // Ottieni il modal
         var modal = document.getElementById("myModal");
-
-        // Ottieni il pulsante che apre il modal
         var btn = document.querySelector(".btn-aggiungi");
-
-        // Ottieni l'elemento per chiudere il modal
         var span = document.getElementsByClassName("close")[0];
-
-        // Quando l'utente clicca sul pulsante, apri il modal
         btn.onclick = function() {
             modal.style.display = "block";
         }
-
-        // Quando l'utente clicca sull'elemento di chiusura, chiudi il modal
         span.onclick = function() {
             modal.style.display = "none";
         }
-
-        // Quando l'utente clicca ovunque al di fuori del modal, chiudi il modal
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
@@ -297,22 +303,32 @@ if (!isset($_SESSION["credenziali"])) {
         }
 
         function dropdown() {
-  document.getElementById("div-dropdown").classList.toggle("show");
-}
+            document.getElementById("div-dropdown").classList.toggle("show");
+        }
 
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.btn-drop')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
-}
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.btn-drop')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        function mostraQuante() {
+            var colonne = document.querySelectorAll('.colonna');
+            colonne.forEach(function(colonna, indice) {
+                var conteggioParagrafi = colonna.querySelectorAll('.task').length;
+                console.log(indice);
+                var span = document.getElementById('span' + (indice + 1));
+                span.innerText = "" + conteggioParagrafi;
+            });
+        }
     </script>
     </div>
 </body>
