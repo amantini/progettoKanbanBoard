@@ -14,32 +14,37 @@ if (!isset($_SESSION["credenziali"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kanban Board</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div class="pagina">
         <div class="forms-container">
             <h1>KanbanBoard</h1>
-            <form action="logout.php" method="POST" id="logout">
-                <button type="submit" id="logout" style="background: none; border: none; cursor: pointer;">
-                    <img src="omino.png" alt="Logout" style="width: 50px; height: 20x;"><p style="color:white;"><?php echo $_SESSION["credenziali"]; ?></p>
-                </button>
-            </form>
+            <div class="dropdown">
+                <button onclick="dropdown()" class="btn-drop"><?php echo $_SESSION["credenziali"]?></button>
+                <div id="div-dropdown" class="dropdown-content">
+                    <a href="gestioneaccount.php">Il mio account</a>
+                    <a href="logout.php">Logout</a>
+                </div>
+            </div>
         </div>
 
         <div class="tab" ondragover="permettiDrop(event)" draggable="false">
             <div class="colonna" ondrop="drop(event)" id="col1" ondragover="permettiDrop(event)">
-                <h3 class="titolo">Da Fare</h3>
+                <h3 class="titolo">Da Fare <span class="span-col" id="span-dafare">3</span></h3>
                 <button class="btn-aggiungi">+</button>
             </div>
             <div class="colonna" ondrop="drop(event)" id="col2" ondragover="permettiDrop(event)">
-                <h3 class="titolo">In Esecuzione</h3>
+                <h3 class="titolo">In Esecuzione <span class="span-col" id="span-esecuzione">1</span></h3>
             </div>
             <div class="colonna" ondrop="drop(event)" id="col3" ondragover="permettiDrop(event)">
-                <h3 class="titolo">Fatto</h3>
+                <h3 class="titolo">Fatto <span class="span-col" id="span-fatto">2</span></h3>
             </div>
             <div class="colonna" ondrop="drop(event)" id="col4" ondragover="permettiDrop(event)">
-                <h3 class="titolo">Terminato</h3>
+                <h3 class="titolo">Terminato <span class="span-col" id="span-terminato">3</span></h3>
             </div>
         </div>
 
@@ -290,6 +295,24 @@ if (!isset($_SESSION["credenziali"])) {
                 modal.style.display = "none";
             }
         }
+
+        function dropdown() {
+  document.getElementById("div-dropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.btn-drop')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
     </script>
     </div>
 </body>
