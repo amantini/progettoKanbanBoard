@@ -116,12 +116,16 @@ if (!isset($_SESSION["credenziali"])) {
             echo "p.id='$id';";
             echo "p.draggable = true;";
             echo "p.style.cursor = 'move';";
+            
             echo "p.onclick = function(event) { mostraModificaDescrizione(event); };";
             echo "p.ondragstart = function(event) { drag(event); };";
             echo "var cella = document.getElementById('col$stato');";
             // Creo un div per contenere la descrizione
             echo "var div = document.createElement('div');";
+           
+            //echo "div.onclick=setTimeout(myFunction, 3000)";
             echo "div.id = 'div$id';"; // Imposto un ID univoco per il div
+            
             echo "div.className = 'info-container';"; // Aggiungo una classe al div
 
             // Creo un paragrafo per la descrizione
@@ -152,6 +156,9 @@ if (!isset($_SESSION["credenziali"])) {
     <script>
         'use strict';
         mostraQuante();
+        function myFunction() {
+            alert('Hello');
+            }
 
         function permettiDrop(event) {
             // visto che gli oggetti non sono di base trascinabili, stabilisco quelli che lo sono
