@@ -34,6 +34,25 @@ if (!isset($_SESSION["credenziali"])) {
     <div class="pagina">
         <div class="forms-container">
             <h1>KanbanBoard</h1>
+            <div>
+        <h1>Tabella dei Dati</h1>
+        <table id="tabModifiche">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Data</th>
+                    <th>Ora</th>
+                    <th>Descrizione</th>
+                    <th>Utente</th>
+                    <th>Stato</th>
+                    <th>Task</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Le righe della tabella verranno inserite qui tramite JavaScript -->
+            </tbody>
+        </table>
+        </div>
             <div class="dropdown">
                 <button onclick="dropdown()" class="btn-drop"><?php echo $utente ?></button>
                 <div id="div-dropdown" class="dropdown-content">
@@ -75,7 +94,9 @@ if (!isset($_SESSION["credenziali"])) {
                 </form>
             </div>
         </div>
+       
     </div>
+
     <?php
     //$conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
     $sql = "SELECT  task.titolo, modifiche.*
@@ -116,19 +137,19 @@ if (!isset($_SESSION["credenziali"])) {
             echo "p.id='$id';";
             echo "p.draggable = true;";
             echo "p.style.cursor = 'move';";
-            
             echo "p.onclick = function(event) { mostraModificaDescrizione(event); };";
             echo "p.ondragstart = function(event) { drag(event); };";
             echo "var cella = document.getElementById('col$stato');";
             // Creo un div per contenere la descrizione
             echo "var div = document.createElement('div');";
-           
-            //echo "div.onclick=setTimeout(myFunction, 3000)";
             echo "div.id = 'div$id';"; // Imposto un ID univoco per il div
-            
             echo "div.className = 'info-container';"; // Aggiungo una classe al div
 
             // Creo un paragrafo per la descrizione
+            echo "var bottone = document.createElement('button');";
+            echo "bottone.id='bottoneLog$task';";
+            echo "bottone.innerText='Vedi log';";
+            echo "bottone.onclick = function(event) {cercaLog(event,$task);};";
             echo "var descrizione = document.createElement('p');";
             echo "descrizione.id = 'descrizione$id';"; // Imposto un ID univoco per la descrizione
             echo "descrizione.className='descrizione-task';";
@@ -143,6 +164,7 @@ if (!isset($_SESSION["credenziali"])) {
             // Aggiungo la descrizione e il titolo della descrizione come figli del div
             echo "div.appendChild(titoloDesc);";
             echo "div.appendChild(descrizione);";
+            echo "div.appendChild(bottone);";
 
             // Aggiungo il div e il paragrafo alla colonna
             echo "cella.appendChild(p);";
@@ -150,15 +172,13 @@ if (!isset($_SESSION["credenziali"])) {
             echo "</script>";
         }
         echo "<script>";
-        echo "mostraQuante();"; echo "</script>";
+        echo "mostraQuante();";
+        echo "</script>";
     }
     ?>
     <script>
         'use strict';
         mostraQuante();
-        function myFunction() {
-            alert('Hello');
-            }
 
         function permettiDrop(event) {
             // visto che gli oggetti non sono di base trascinabili, stabilisco quelli che lo sono
@@ -212,6 +232,7 @@ if (!isset($_SESSION["credenziali"])) {
             });
         }
         var num = 0;
+
         function mostraModificaDescrizione(event) {
             const vettoreDiv = document.querySelectorAll('.info-container');
             const descrizione = document.getElementById("descrizione" + event.target.id);
@@ -329,12 +350,47 @@ if (!isset($_SESSION["credenziali"])) {
             var colonne = document.querySelectorAll('.colonna');
             colonne.forEach(function(colonna, indice) {
                 var conteggioParagrafi = colonna.querySelectorAll('.task').length;
-                console.log(indice);
                 var span = document.getElementById('span' + (indice + 1));
                 span.innerText = "" + conteggioParagrafi;
             });
         }
+
+        function apriLog(evento) {
+            const myTimeout = setTimeout(mostraLog, 1000);
+
+            function mostraLog() {
+                window.location.href = "log.php";
+            }
+
+            function myStopFunction() {
+                clearTimeout(myTimeout);
+            }
+        }
+        async function cercaLog(event,task){
+            let risposta = await fetch("log.php?task="+task);
+            let modifiche = await risposta.json();
+            console.log(modifiche);
+            let tableRows = '';
+            modifiche.forEach(item => {
+            tableRows += `
+                <tr>
+                    <td>${item.id}</td>
+                    <td>${item.data}</td>
+                    <td>${item.ora}</td>
+                    <td>${item.descrizione}</td>
+                    <td>${item.fk_utente}</td>
+                    <td>${item.fk_stato}</td>
+                    <td>${item.fk_task}</td>
+                </tr>
+            `;
+        });
+
+        document.querySelector('#tabModifiche tbody').innerHTML = tableRows;
+
+
+        }
     </script>
+
     </div>
 </body>
 
