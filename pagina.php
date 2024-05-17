@@ -35,24 +35,29 @@ if (!isset($_SESSION["credenziali"])) {
         <div class="forms-container">
             <h1>KanbanBoard</h1>
             <div>
-        <h1>Tabella dei Dati</h1>
-        <table id="tabModifiche">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Data</th>
-                    <th>Ora</th>
-                    <th>Descrizione</th>
-                    <th>Utente</th>
-                    <th>Stato</th>
-                    <th>Task</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Le righe della tabella verranno inserite qui tramite JavaScript -->
-            </tbody>
-        </table>
-        </div>
+                <div id="modalLog" class="modal">
+                    <div class="modal-content-log">
+                        <span class="close-log">&times;</span>
+                        <h2>Log Modifiche</h2>
+                        <table id="tabModifiche">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Data</th>
+                                    <th>Ora</th>
+                                    <th>Descrizione</th>
+                                    <th>Utente</th>
+                                    <th>Stato</th>
+                                    <th>Task</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Le righe della tabella verranno inserite qui tramite JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
             <div class="dropdown">
                 <button onclick="dropdown()" class="btn-drop"><?php echo $utente ?></button>
                 <div id="div-dropdown" class="dropdown-content">
@@ -61,7 +66,9 @@ if (!isset($_SESSION["credenziali"])) {
                     <!--<p><?php //echo strtolower("$nome$cognome@gmail.com")
                             ?></p>!-->
                     <a href="gestioneaccount.php">Il mio account</a>
-                    <a href="help.php">Aiuto</a>
+                    <a href="#" onclick="caricaDatabase()" id="caricaLink">Carica</a>
+                    <a href="carica.php">Salva</a>
+                    <a href="help.html">Aiuto</a>
                     <a href="logout.php">Logout</a>
                 </div>
             </div>
@@ -94,7 +101,7 @@ if (!isset($_SESSION["credenziali"])) {
                 </form>
             </div>
         </div>
-       
+
     </div>
 
     <?php
@@ -171,9 +178,6 @@ if (!isset($_SESSION["credenziali"])) {
             echo "p.appendChild(div);";
             echo "</script>";
         }
-        echo "<script>";
-        echo "mostraQuante();";
-        echo "</script>";
     }
     ?>
     <script>
@@ -366,28 +370,56 @@ if (!isset($_SESSION["credenziali"])) {
                 clearTimeout(myTimeout);
             }
         }
-        async function cercaLog(event,task){
-            let risposta = await fetch("log.php?task="+task);
+        async function cercaLog(event, task) {
+            let risposta = await fetch("log.php?task=" + task);
             let modifiche = await risposta.json();
             console.log(modifiche);
             let tableRows = '';
             modifiche.forEach(item => {
-            tableRows += `
-                <tr>
-                    <td>${item.id}</td>
-                    <td>${item.data}</td>
-                    <td>${item.ora}</td>
-                    <td>${item.descrizione}</td>
-                    <td>${item.fk_utente}</td>
-                    <td>${item.fk_stato}</td>
-                    <td>${item.fk_task}</td>
-                </tr>
-            `;
-        });
+                tableRows += `
+            <tr>
+                <td>${item.id}</td>
+                <td>${item.data}</td>
+                <td>${item.ora}</td>
+                <td>${item.descrizione}</td>
+                <td>${item.fk_utente}</td>
+                <td>${item.fk_stato}</td>
+                <td>${item.fk_task}</td>
+            </tr>
+        `;
+            });
 
-        document.querySelector('#tabModifiche tbody').innerHTML = tableRows;
+            document.querySelector('#tabModifiche tbody').innerHTML = tableRows;
 
+            // Mostra il modal
+            let modalLog = document.getElementById("modalLog");
+            modalLog.style.display = "block";
 
+            // Chiudi il modal quando si clicca sulla X
+            let spanLog = document.getElementsByClassName("close-log")[0];
+            spanLog.onclick = function() {
+                modalLog.style.display = "none";
+            }
+
+            // Chiudi il modal quando si clicca fuori dal modal
+            window.onclick = function(event) {
+                if (event.target == modalLog) {
+                    modalLog.style.display = "none";
+                }
+            }
+        }
+
+        function salvaDatabase() {
+            // Implementa qui la logica per salvare il database su un file CSV
+            // Puoi utilizzare JavaScript per inviare una richiesta al server che esegue questa operazione
+            // Ad esempio, puoi usare fetch() per inviare i dati al server e salvarli su un file CSV
+            // Assicurati di includere le credenziali di accesso (se necessario) e gestire eventuali errori
+            alert("Database salvato con successo su file CSV!");
+        }
+
+        function caricaDatabase() {
+            // Implementa qui la logica per caricare il database da un file CSV
+            alert("Caricamento del database in corso...");
         }
     </script>
 
