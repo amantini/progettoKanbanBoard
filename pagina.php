@@ -160,6 +160,7 @@ if (!isset($_SESSION["credenziali"])) {
             echo "var descrizione = document.createElement('p');";
             echo "descrizione.id = 'descrizione$id';"; // Imposto un ID univoco per la descrizione
             echo "descrizione.className='descrizione-task';";
+            echo "descrizione.contentEditable='true';";
             echo "div.style.display='none';";
             echo "descrizione.innerText = '" . $descrizione . "';";
 
@@ -236,51 +237,55 @@ if (!isset($_SESSION["credenziali"])) {
             });
         }
         
+        var num = 0;
+
         function mostraModificaDescrizione(event) {
             const vettoreDiv = document.querySelectorAll('.info-container');
+            const descrizione = document.getElementById("descrizione" + event.target.id);
             if (event.target.tagName.toLowerCase() === 'p' && event.target.classList.contains('task')) {
                 const p = document.getElementById(event.target.id);
-                var stato = parseInt(p.dataset.stato);
-                var utente = p.dataset.utente;
-                var task = parseInt(p.dataset.task);
+                var elementoSelezionato = document.getElementById(event.target.id);
+                var stato = parseInt(elementoSelezionato.dataset.stato);
+                var utente = elementoSelezionato.dataset.utente;
+                var task = parseInt(elementoSelezionato.dataset.task);
                 const div = document.getElementById("div" + event.target.id);
                 const descrizione = document.getElementById("descrizione" + event.target.id);
-                vettoreDiv.forEach(desc => {
-                    desc.style.display = "none";
-                });
-                if (div.style.display === "block") {
-                    div.style.display = "none";
-                    document.removeEventListener("dblclick", gestisciDoppioClicl);
-                    descrizione.removeEventListener("keydown", gestisciInvio);
-                } else {
+                if (num === 0) {
                     div.style.display = "block";
-                    document.addEventListener("dblclick", gestisciDoppioClicl);
+                    //document.addEventListener("dblclick", gestisciDoppioClicl);
                     descrizione.addEventListener("keydown", gestisciInvio);
-                }
-            }
-        }
-
-
-        function gestisciDoppioClicl(event) {
-            if (event.target.tagName.toLowerCase() === 'p' && event.target.classList.contains('descrizione-task')) {
-                if (event.target.contentEditable === 'true') {
-                    event.target.contentEditable = false;
+                    num++;
                 } else {
-                    event.target.contentEditable = true;
+                    vettoreDiv.forEach(desc => {
+                        desc.style.display = "none";
+                    });
+                    num = 0;
+                    //document.removeEventListener("dblclick", gestisciDoppioClicl);
+                    descrizione.removeEventListener("keydown", gestisciInvio);
                 }
-                event.target.focus();
             }
-        }
 
-        function gestisciInvio(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                const descrizioneElementi = document.querySelectorAll('.descrizione-task');
-                descrizioneElementi.forEach(desc => {
-                    desc.blur();
-                });
-                inviaDati(descrizione.innerText, stato, utente, task);
+            /*function gestisciDoppioClicl(event) {
+                if (event.target.tagName.toLowerCase() === 'p' && event.target.classList.contains('descrizione-task')) {
+                    if (event.target.contentEditable === 'true') {
+                        event.target.contentEditable = false;
+                    } else {
+                        event.target.contentEditable = true;
+                    }
+                    event.target.focus();
+                }
+            }*/
 
+            function gestisciInvio(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    const descrizioneElementi = document.querySelectorAll('.descrizione-task');
+                    descrizioneElementi.forEach(desc => {
+                        desc.blur();
+                    });
+                    inviaDati(descrizione.innerText, stato, utente, task);
+
+                }
             }
         }
         
@@ -357,17 +362,6 @@ if (!isset($_SESSION["credenziali"])) {
             });
         }
 
-        function apriLog(evento) {
-            const myTimeout = setTimeout(mostraLog, 1000);
-
-            function mostraLog() {
-                window.location.href = "log.php";
-            }
-
-            function myStopFunction() {
-                clearTimeout(myTimeout);
-            }
-        }
         async function cercaLog(event, task) {
             let risposta = await fetch("log.php?task=" + task);
             let modifiche = await risposta.json();
