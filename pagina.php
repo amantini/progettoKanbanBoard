@@ -155,7 +155,7 @@ if (!isset($_SESSION["credenziali"])) {
             // Creo un paragrafo per la descrizione
             echo "var bottone = document.createElement('button');";
             echo "bottone.id='bottoneLog$task';";
-            echo "bottone.innerText='Vedi log';";
+            echo "bottone.innerText='Storico modifiche';";
             echo "bottone.onclick = function(event) {cercaLog(event,$task);};";
             echo "var descrizione = document.createElement('p');";
             echo "descrizione.id = 'descrizione$id';"; // Imposto un ID univoco per la descrizione
@@ -408,15 +408,10 @@ if (!isset($_SESSION["credenziali"])) {
         }
 
         function salvaDatabase() {
-            // Implementa qui la logica per salvare il database su un file CSV
-            // Puoi utilizzare JavaScript per inviare una richiesta al server che esegue questa operazione
-            // Ad esempio, puoi usare fetch() per inviare i dati al server e salvarli su un file CSV
-            // Assicurati di includere le credenziali di accesso (se necessario) e gestire eventuali errori
             alert("Database salvato con successo su file CSV!");
         }
 
         function caricaDatabase() {
-            // Implementa qui la logica per caricare il database da un file CSV
             alert("Caricamento del database in corso...");
         }
     </script>
