@@ -66,7 +66,7 @@ if (!isset($_SESSION["credenziali"])) {
                     <!--<p><?php //echo strtolower("$nome$cognome@gmail.com")
                             ?></p>!-->
                     <a href="gestioneaccount.php">Il mio account</a>
-                    <a href="#" onclick="caricaDatabase()" id="caricaLink">Carica</a>
+                    <a href="carica.php">Carica</a>
                     <a href="carica.php">Salva</a>
                     <a href="help.html">Aiuto</a>
                     <a href="logout.php">Logout</a>
@@ -101,7 +101,6 @@ if (!isset($_SESSION["credenziali"])) {
                 </form>
             </div>
         </div>
-
     </div>
 
     <?php
@@ -143,7 +142,7 @@ if (!isset($_SESSION["credenziali"])) {
             echo "p.className = 'task';";
             echo "p.id='$id';";
             echo "p.draggable = true;";
-            echo "p.style.cursor = 'move';";
+            echo "p.style.cursor = 'default';";
             echo "p.onclick = function(event) { mostraModificaDescrizione(event); };";
             echo "p.ondragstart = function(event) { drag(event); };";
             echo "var cella = document.getElementById('col$stato');";
@@ -202,7 +201,7 @@ if (!isset($_SESSION["credenziali"])) {
             var colonnaRilascio = event.target.closest('.colonna');
             if (colonnaRilascio != null) {
                 var idColonnaCorrente = elementoSelezionato.parentElement.id;
-                if (parseInt(colonnaRilascio.id.replace('col', '')) > parseInt(idColonnaCorrente.replace('col', ''))) {
+                if (parseInt(colonnaRilascio.id.replace('col', '')) - parseInt(idColonnaCorrente.replace('col', '')) === 1) {
                     colonnaRilascio.appendChild(elementoSelezionato);
                     mostraQuante();
                     rilascio(data);
@@ -399,14 +398,6 @@ if (!isset($_SESSION["credenziali"])) {
                     modalLog.style.display = "none";
                 }
             }
-        }
-
-        function salvaDatabase() {
-            alert("Database salvato con successo su file CSV!");
-        }
-
-        function caricaDatabase() {
-            alert("Caricamento del database in corso...");
         }
     </script>
 

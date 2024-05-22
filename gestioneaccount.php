@@ -3,28 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Account Details</title>
+    <title>Gestione Account</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
+            background-color: #273D59;
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             height: 100vh;
-            background-color: #273D59;
         }
         .container {
-            background-color: #fff;
+            background-color: #ebebeb;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             width: 90%;
             max-width: 800px;
             text-align: center;
-            background-color: #ebebeb;
         }
         .profile-image {
             width: 150px;
@@ -84,7 +82,19 @@
             transition: color 0.3s;
         }
         .link-container a:hover {
+            color: #45a049;
+        }
+        .message {
+            display: none;
             color: #005C53;
+            margin-top: 20px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .message.show {
+            display: block;
+            opacity: 1;
         }
     </style>
 </head>
@@ -94,7 +104,7 @@
         <?php
             session_start();
             if (!isset($_SESSION["credenziali"])) {
-                header("Location: login.php");
+                header("Location: indice.php");
                 exit;
             }
             $username = $_SESSION["credenziali"];
@@ -107,12 +117,12 @@
             $sql = "SELECT username, nome, cognome, password FROM utenti WHERE username = '$username'";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
-                echo "<table><tr><th>Nome</th><th>Cognome</th><th>Username</th><th>Password</th></tr>";
+                echo "<table><tr><th>Username</th><th>Nome</th><th>Cognome</th><th>Password</th></tr>";
                 while($row = $result->fetch_assoc()) {
                     echo "<tr>
+                        <td id='tdUsername'>".$row["username"]."</td>
                         <td contenteditable='true' id='tdNome'>".$row["nome"]."</td>
                         <td contenteditable='true' id='tdCognome'>".$row["cognome"]."</td>
-                        <td contenteditable='true' id='tdUsername'>".$row["username"]."</td>
                         <td contenteditable='true' id='tdPassword'>".$row["password"]."</td>
                         </tr>";
                 }
@@ -121,6 +131,7 @@
             $conn->close();
         ?>
         <button onclick="invia()">Cambia dati</button>
+        <div class="message" id="messaggioConferma">Cambio dati effettuato</div>
         <div class="link-container">
             <a href="pagina.php">Vai alla pagina principale</a>
         </div>
@@ -144,6 +155,13 @@
                     'Content-type': 'application/json; charset=UTF-8'
                 }
             });
+            if (risposta.ok) {
+                const message = document.getElementById('messaggioConferma');
+                message.classList.add('show');
+                setTimeout(() => {
+                    message.classList.remove('show');
+                }, 3000); 
+            }
         }
     </script>
 
