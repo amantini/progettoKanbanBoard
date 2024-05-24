@@ -67,7 +67,7 @@ if (!isset($_SESSION["credenziali"])) {
                             ?></p>!-->
                     <a href="gestioneaccount.php">Il mio account</a>
                     <a href="carica.php">Carica</a>
-                    <a href="carica.php">Salva</a>
+                    <a href="salva.php">Salva</a>
                     <a href="help.html">Aiuto</a>
                     <a href="logout.php">Logout</a>
                 </div>
