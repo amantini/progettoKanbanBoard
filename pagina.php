@@ -191,6 +191,9 @@ if (!isset($_SESSION["credenziali"])) {
 
         function drag(event) {
             // stabilisco il tipo dei dati dell'elemento target dell'evento (id)
+            var id = event.target.id;
+            var div = document.getElementById("div"+ id);
+            div.style.display="none"; 
             event.dataTransfer.setData("text", event.target.id);
         }
 
@@ -216,11 +219,6 @@ if (!isset($_SESSION["credenziali"])) {
             var stato = parseInt(elementoSelezionato.dataset.stato);
             var utente = elementoSelezionato.dataset.utente;
             var task = elementoSelezionato.dataset.task;
-            /*console.log("ID:", id);
-            console.log("Descrizione:", descrizione);
-            console.log("Stato:", stato);
-            console.log("Utente:", utente);
-            console.log("Task:", task);*/
             const risposta = await fetch(`modifica.php`, {
                 method: "POST",
                 body: JSON.stringify({
@@ -251,7 +249,6 @@ if (!isset($_SESSION["credenziali"])) {
                 const descrizione = document.getElementById("descrizione" + event.target.id);
                 if (num === 0) {
                     div.style.display = "block";
-                    //document.addEventListener("dblclick", gestisciDoppioClicl);
                     descrizione.addEventListener("keydown", gestisciInvio);
                     num++;
                 } else {
@@ -259,24 +256,13 @@ if (!isset($_SESSION["credenziali"])) {
                         desc.style.display = "none";
                     });
                     num = 0;
-                    //document.removeEventListener("dblclick", gestisciDoppioClicl);
                     descrizione.removeEventListener("keydown", gestisciInvio);
                 }
             }
 
-            /*function gestisciDoppioClicl(event) {
-                if (event.target.tagName.toLowerCase() === 'p' && event.target.classList.contains('descrizione-task')) {
-                    if (event.target.contentEditable === 'true') {
-                        event.target.contentEditable = false;
-                    } else {
-                        event.target.contentEditable = true;
-                    }
-                    event.target.focus();
-                }
-            }*/
-
             function gestisciInvio(event) {
                 if (event.key === "Enter") {
+                    
                     event.preventDefault();
                     const descrizioneElementi = document.querySelectorAll('.descrizione-task');
                     descrizioneElementi.forEach(desc => {
@@ -285,6 +271,7 @@ if (!isset($_SESSION["credenziali"])) {
                     inviaDati(descrizione.innerText, stato, utente, task);
 
                 }
+                event.key="";
             }
         }
         
