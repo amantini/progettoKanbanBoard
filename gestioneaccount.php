@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,18 +13,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
             height: 100vh;
         }
+
         .container {
-            background-color: #ebebeb;
+            background-color: #fff;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             width: 90%;
             max-width: 800px;
             text-align: center;
+            position: relative;
         }
+
         .profile-image {
             width: 150px;
             height: 150px;
@@ -31,59 +34,72 @@
             object-fit: cover;
             margin-bottom: 20px;
         }
+
         table {
             border-collapse: collapse;
             width: 100%;
             margin-bottom: 20px;
         }
-        th, td {
+
+        th,
+        td {
             padding: 15px;
             text-align: left;
         }
+
         th {
-            background-color: #005C53;
+            background-color: #525C9B;
             color: white;
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
+
         td {
             border-bottom: 1px solid #ddd;
         }
+
         td[contenteditable="true"] {
             background-color: #f9f9f9;
             cursor: text;
         }
+
         tr:hover td[contenteditable="true"] {
             background-color: #f1f1f1;
         }
+
         button {
-            display: block;
-            width: 200px;
-            margin: 20px auto;
-            padding: 10px;
+            display: inline-block;
+            padding: 10px 20px;
             font-size: 16px;
-            background-color: #005C53;
+            background-color: #223AD1;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         button:hover {
-            background-color: #45a049;
+            background-color: #0C1C80;
         }
+
         .link-container {
-            margin-top: 20px;
+            text-align: left;
+            margin-bottom: 20px;
         }
+
         .link-container a {
-            color: #005C53;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            color: blue;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 900;
             transition: color 0.3s;
         }
+
         .link-container a:hover {
-            color: #45a049;
+            color: #A20404;
         }
+
         .message {
             display: none;
             color: #005C53;
@@ -92,48 +108,54 @@
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
         }
+
         .message.show {
             display: block;
             opacity: 1;
         }
+
+        #thUsername {
+            background-color: #303F9E;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <img src="omino.png" alt="User Image" class="profile-image">
         <?php
-            session_start();
-            if (!isset($_SESSION["credenziali"])) {
-                header("Location: indice.php");
-                exit;
-            }
-            $username = $_SESSION["credenziali"];
-            $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
+        session_start();
+        if (!isset($_SESSION["credenziali"])) {
+            header("Location: indice.php");
+            exit;
+        }
+        $username = $_SESSION["credenziali"];
+        $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
 
-            if (!$conn) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
+        if (!$conn) {
+            die("Connection failed: " . mysqli_connect_error());
+        }
 
-            $sql = "SELECT username, nome, cognome, password FROM utenti WHERE username = '$username'";
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0) {
-                echo "<table><tr><th>Username</th><th>Nome</th><th>Cognome</th><th>Password</th></tr>";
-                while($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                        <td id='tdUsername'>".$row["username"]."</td>
-                        <td contenteditable='true' id='tdNome'>".$row["nome"]."</td>
-                        <td contenteditable='true' id='tdCognome'>".$row["cognome"]."</td>
-                        <td contenteditable='true' id='tdPassword'>".$row["password"]."</td>
+        $sql = "SELECT username, nome, cognome, password FROM utenti WHERE username = '$username'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            echo "<table><tr><th id='thUsername'>Username</th><th>Nome</th><th>Cognome</th><th>Password</th></tr>";
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                        <td id='tdUsername'>" . $row["username"] . "</td>
+                        <td contenteditable='true' id='tdNome'>" . $row["nome"] . "</td>
+                        <td contenteditable='true' id='tdCognome'>" . $row["cognome"] . "</td>
+                        <td contenteditable='true' id='tdPassword'>" . $row["password"] . "</td>
                         </tr>";
-                }
-                echo "</table>";
             }
-            $conn->close();
+            echo "</table>";
+        }
+        $conn->close();
         ?>
         <button onclick="invia()">Cambia dati</button>
         <div class="message" id="messaggioConferma">Cambio dati effettuato</div>
         <div class="link-container">
-            <a href="pagina.php">Vai alla pagina principale</a>
+            <a href="pagina.php">&lt; Torna indietro</a>
         </div>
     </div>
 
@@ -160,10 +182,11 @@
                 message.classList.add('show');
                 setTimeout(() => {
                     message.classList.remove('show');
-                }, 3000); 
+                }, 3000);
             }
         }
     </script>
 
 </body>
+
 </html>

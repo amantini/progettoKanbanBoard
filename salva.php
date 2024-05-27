@@ -3,7 +3,6 @@ $host = 'localhost';
 $dbname = '5i1_brugnoniamantini';
 $username = 'root';
 $password = '';
-
 $conn = mysqli_connect($host, $username, $password, $dbname);
 
 if (!$conn) {

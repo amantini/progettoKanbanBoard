@@ -262,7 +262,6 @@ if (!isset($_SESSION["credenziali"])) {
 
             function gestisciInvio(event) {
                 if (event.key === "Enter") {
-                    
                     event.preventDefault();
                     const descrizioneElementi = document.querySelectorAll('.descrizione-task');
                     descrizioneElementi.forEach(desc => {
