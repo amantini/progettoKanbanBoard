@@ -18,38 +18,34 @@
     $conn = mysqli_connect("localhost", "root", "", "5i1_brugnoniamantini");
     if ($_FILES["nomeFile"]["error"] == 0) {
         $contenuto = file($_FILES["nomeFile"]["tmp_name"]);
+        $sqlDelete1 = "delete from utenti";
+        $sqlDelete2 = "delete from task";
+        mysqli_query($conn, $sqlDelete1);
+        mysqli_query($conn, $sqlDelete2);
         foreach ($contenuto as $riga) {
             $r = explode(',', $riga);
             if ($r[0] == "M") {
-                $sql1 = "insert into modifiche values ('$r[2]','$r[3]','$r[4]','$r[5]',$r[5],$r[6])";
+                $sql1 = "INSERT INTO modifiche (data,ora,descrizione,fk_utente,fk_stato,fk_task) VALUES ('$r[2]', '$r[3]', '$r[4]', '$r[5]', $r[6], $r[7])";
                 mysqli_query($conn, $sql1);
                 echo $sql1;
-            }
-            if ($r[0] == "T") {
-                $sql2 = "insert into task values ('$r[2]')";
-                mysqli_query($conn, $sql2);
+            } elseif ($r[0] == "T") {
+                $sql2 = "INSERT INTO task  VALUES ($r[1],'$r[2]')";
                 echo $sql2;
-            } else {
-                $username = $r[1];
-                $sql_check = "SELECT * FROM utenti WHERE username = '$username'";
-                $result_check = mysqli_query($conn, $sql_check);
+                mysqli_query($conn, $sql2);
                 
-                if (mysqli_num_rows($result_check) > 0) {
-                    echo "Username $username già esistente.<br>";
-                } else {
-                    $sql3 = "insert into utenti values ('$r[1]','$r[2]','$r[3]','$r[4]')";
-                    mysqli_query($conn, $sql3);
-                    echo $sql3 . "<br>";
-                }
+            } elseif ($r[0] == "U") {
+                $sql3 = "INSERT INTO utenti VALUES ('$r[1]', '$r[2]', '$r[3]', '$r[4]')";
+                mysqli_query($conn, $sql3);
+                echo $sql3 . "<br>";
             }
-        }
+        }            
         mysqli_close($conn);
     } else {
         echo ("Errore caricamento");
         die();
     }
     ?>
-    <a href="pagina.php">Pagina</a>
+    <a href="index.php">Pagina</a>
 </body>
 
 </html>
