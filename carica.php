@@ -9,11 +9,7 @@
 
 <body>
     <?php
-    session_start();
-    if (!isset($_SESSION["credenziali"])) {
-        header("Location: indice.php");
-        exit;
-    }
+
     ?>
     <form action="caricaConferma.php" method="post" enctype="multipart/form-data">
         <input type="file" name="nomeFile">

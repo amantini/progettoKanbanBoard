@@ -22,7 +22,7 @@ function write_table_to_csv($conn, $table_name, $file, $prefix) {
         }
     }
 }
-
+write_table_to_csv($conn, 'stati', $file, 'S');
 write_table_to_csv($conn, 'task', $file, 'T');
 write_table_to_csv($conn, 'utenti', $file, 'U');
 write_table_to_csv($conn, 'modifiche', $file, 'M');

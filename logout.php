@@ -9,7 +9,7 @@
     <?php  
         session_start();
         session_destroy();
-        header("Location: indice.php");
+        header("Location: index.php");
     ?>
     
 </body>
