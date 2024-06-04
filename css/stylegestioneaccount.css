@@ -1,0 +1,111 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #273D59;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    position: relative;
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+th,
+td {
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #525C9B;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+td {
+    border-bottom: 1px solid #ddd;
+}
+
+td[contenteditable="true"] {
+    background-color: #f9f9f9;
+    cursor: text;
+}
+
+tr:hover td[contenteditable="true"] {
+    background-color: #f1f1f1;
+}
+
+button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #223AD1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0C1C80;
+}
+
+.link-container {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.link-container a {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: blue;
+    text-decoration: none;
+    font-weight: 900;
+    transition: color 0.3s;
+}
+
+.link-container a:hover {
+    color: #A20404;
+}
+
+.message {
+    display: none;
+    color: #005C53;
+    margin-top: 20px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.message.show {
+    display: block;
+    opacity: 1;
+}
+
+#thUsername {
+    background-color: #303F9E;
+}

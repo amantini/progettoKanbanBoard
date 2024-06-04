@@ -1,6 +1,6 @@
 <?php
-
-$conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
+include 'config/config.php';
+$conn = mysqli_connect($dbIp, $dbUsername, $dbPassword, $dbName);
 
 if (!$conn) {
     die("connessione fallita: " . mysqli_connect_error());

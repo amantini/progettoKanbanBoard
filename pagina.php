@@ -13,7 +13,7 @@ if (!isset($_SESSION["credenziali"])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kanban Board</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/stylepagina.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -21,8 +21,10 @@ if (!isset($_SESSION["credenziali"])) {
 
 <body>
     <?php
+    include 'config/config.php';
+
     $utente = $_SESSION["credenziali"];
-    $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
+    $conn = mysqli_connect($dbIp, $dbUsername, $dbPassword, $dbName);
     $sql = "SELECT * FROM utenti WHERE username='$utente'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
@@ -61,7 +63,7 @@ if (!isset($_SESSION["credenziali"])) {
             <div class="dropdown">
                 <button onclick="dropdown()" class="btn-drop"><?php echo $utente ?></button>
                 <div id="div-dropdown" class="dropdown-content">
-                    <img src="omino.png" width="90px" height="90px">
+                    <img src="img/omino.png" width="90px" height="90px">
                     <p><?php echo "$nome $cognome" ?></p>
                     <!--<p><?php //echo strtolower("$nome$cognome@gmail.com")
                             ?></p>!-->

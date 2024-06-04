@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login e Registrazione</title>
-    <link rel="stylesheet" href="styleindex.css">
+    <link rel="stylesheet" href="css/styleindex.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -19,47 +19,68 @@
         </div>
         <?php
         session_start();
+        include "config/config.php";
+
         $msg = "";
-        $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
-        //$conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
+
         if (isset($_POST["loginUsername"]) && isset($_POST["loginPassword"])) {
-            $username = mysqli_real_escape_string($conn, $_POST["loginUsername"]);
-            $password = mysqli_real_escape_string($conn, $_POST["loginPassword"]);
-            if (!$conn) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
-            $query = "SELECT * FROM utenti WHERE username = '$username' AND password = '$password'";
-            $result = mysqli_query($conn, $query);
-            if (mysqli_num_rows($result) > 0) {
+            $username = $_POST["loginUsername"];
+            $password = $_POST["loginPassword"];
+
+            if ($username === $usernameAdmin && $password === $passwordAdmin) {
                 $_SESSION["credenziali"] = $username;
-                header("Location: pagina.php");
+                header("Location: carica.php");
                 exit;
-            } else {
-                $msg = "Username o password non corretti";
             }
 
-            mysqli_close($conn);
-        }
-        if (isset($_POST["registraUsername"])) {
+            $conn = @mysqli_connect($dbIp, $dbUsername, $dbPassword, $dbName);
+
+            // Se la connessione fallisce, mostra un messaggio di errore
             if (!$conn) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
-            $username = mysqli_real_escape_string($conn, $_POST["registraUsername"]);
-            $nome = mysqli_real_escape_string($conn, $_POST["registraNome"]);
-            $cognome = mysqli_real_escape_string($conn, $_POST["registraCognome"]);
-            $password = mysqli_real_escape_string($conn, $_POST["registraPassword"]);
-
-            $sql = "SELECT username FROM utenti WHERE username = '$username'";
-            $result = mysqli_query($conn, $sql);
-            if (mysqli_num_rows($result) > 0) {
-                $msg = "Utente già registrato";
+                $msg = "Username o password non corretti";
             } else {
-                $sql = "INSERT INTO utenti (username, nome, cognome, password) VALUES ('$username', '$nome', '$cognome', '$password')";
-                if (mysqli_query($conn, $sql)) {
-                    $msg = "Utente registrato con successo!";
+                $username = mysqli_real_escape_string($conn, $_POST["loginUsername"]);
+                $password = mysqli_real_escape_string($conn, $_POST["loginPassword"]);
+
+                $query = "SELECT * FROM utenti WHERE username = '$username' AND password = '$password'";
+                $result = mysqli_query($conn, $query);
+
+                if (mysqli_num_rows($result) > 0) {
+                    $_SESSION["credenziali"] = $username;
+                    header("Location: pagina.php");
+                    exit;
                 } else {
-                    $msg = "Errore nell'inserimento";
+                    $msg = "Username o password non corretti";
                 }
+
+                mysqli_close($conn);
+            }
+        }
+
+        if (isset($_POST["registraUsername"])) {
+            $conn = @mysqli_connect($dbIp, $dbUsername, $dbPassword, $dbName);
+
+            if (!$conn) {
+                $msg = "Errore di connessione al database.";
+            } else {
+                $username = mysqli_real_escape_string($conn, $_POST["registraUsername"]);
+                $nome = mysqli_real_escape_string($conn, $_POST["registraNome"]);
+                $cognome = mysqli_real_escape_string($conn, $_POST["registraCognome"]);
+                $password = mysqli_real_escape_string($conn, $_POST["registraPassword"]);
+
+                $sql = "SELECT username FROM utenti WHERE username = '$username'";
+                $result = mysqli_query($conn, $sql);
+                if (mysqli_num_rows($result) > 0) {
+                    $msg = "Utente già registrato";
+                } else {
+                    $sql = "INSERT INTO utenti (username, nome, cognome, password) VALUES ('$username', '$nome', '$cognome', '$password')";
+                    if (mysqli_query($conn, $sql)) {
+                        $msg = "Utente registrato con successo!";
+                    } else {
+                        $msg = "Errore nell'inserimento";
+                    }
+                }
+                mysqli_close($conn);
             }
         }
         ?>
@@ -84,34 +105,4 @@
                 <input type="text" id="registerName" name="registraNome" placeholder="Nome">
             </div>
             <div class="form-group">
-                <input type="text" id="registerSurname" name="registraCognome" placeholder="Cognome">
-            </div>
-            <div class="form-group">
-                <input type="text" id="registerUsername" name="registraUsername" placeholder="Username">
-            </div>
-            <div class="form-group">
-                <input type="password" id="registerPassword" name="registraPassword" placeholder="Password">
-            </div>
-            <div class="form-group">
-                <button class="btn-register-login" type="submit">Registrazione</button>
-            </div>
-        </form>
-    </div>
-    <script>
-        function showLoginForm() {
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('registerForm').style.display = 'none';
-            document.getElementById('btn-login').style.background = 'linear-gradient(#ff105f, #ffad06)';
-            document.getElementById('btn-register').style.background = 'transparent';
-        }
-
-        function showRegisterForm() {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'block';
-            document.getElementById('btn-register').style.background = 'linear-gradient(#ff105f, #ffad06)';
-            document.getElementById('btn-login').style.background = 'transparent';
-        }
-    </script>
-</body>
-
-</html>
+                <input type="text" id="registerSurname" name="registraCognome" placeholder="Cogn

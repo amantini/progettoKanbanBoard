@@ -1,13 +1,14 @@
 <?php
 session_start();
+include 'config/config.php';
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $dati_decodificati = json_decode(file_get_contents("php://input"), true);
     if (isset($dati_decodificati["nome"]) && isset($dati_decodificati["descrizione"])) {
-        $conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
+        $conn = mysqli_connect($dbIp, $dbUsername, $dbPassword, $dbName);
         $nomeTask = mysqli_escape_string($conn,$dati_decodificati["nome"]);
         $descrizione = mysqli_escape_string($conn,$dati_decodificati["descrizione"]);
         $utente = mysqli_escape_string($conn, $_SESSION["credenziali"]);
-        //$conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
         if (!$conn) {
             die("Errore di connessione al database: " . mysqli_connect_error());
         }

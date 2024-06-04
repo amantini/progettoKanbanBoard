@@ -1,7 +1,6 @@
 <?php
-
-$conn = mysqli_connect("localhost", "root", "", "5i1_BrugnoniAmantini");
-//$conn = mysqli_connect("10.1.0.52", "5i1", "5i1", "5i1_BrugnoniAmantini");
+include 'config/config.php';
+$conn = mysqli_connect($dbIp, $dbUsername, $dbPassword, $dbName);
 
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
