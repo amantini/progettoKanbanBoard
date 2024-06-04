@@ -23,7 +23,7 @@
     $createTableTask = "
     CREATE TABLE IF NOT EXISTS task (
         id INT PRIMARY KEY,
-        descrizione VARCHAR(100)
+        titolo VARCHAR(100)
     )";
     mysqli_query($conn, $createTableTask);
 
@@ -46,8 +46,8 @@
     $createTableModifiche = "
     CREATE TABLE IF NOT EXISTS modifiche (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        data DATE,
-        ora TIME,
+        data DATE not null DEFAULT (CURRENT_DATE),
+        ora TIME not null DEFAULT (CURRENT_DATE),
         descrizione VARCHAR(255),
         fk_utente VARCHAR(16),
         fk_stato INT(11),

@@ -214,8 +214,10 @@ if (!isset($_SESSION["credenziali"])) {
 
         async function rilascio(data) {
             var elementoSelezionato = document.getElementById(data);
+            var desc = document.getElementById("descrizione" + data);
+            console.log(desc);
             var id = parseInt(elementoSelezionato.dataset.id);
-            var descrizione = elementoSelezionato.dataset.descrizione;
+            var descrizione = desc.innerText;
             var stato = parseInt(elementoSelezionato.dataset.stato);
             var utente = elementoSelezionato.dataset.utente;
             var task = elementoSelezionato.dataset.task;
