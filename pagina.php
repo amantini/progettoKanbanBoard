@@ -194,8 +194,8 @@ if (!isset($_SESSION["credenziali"])) {
         function drag(event) {
             // stabilisco il tipo dei dati dell'elemento target dell'evento (id)
             var id = event.target.id;
-            var div = document.getElementById("div"+ id);
-            div.style.display="none"; 
+            var div = document.getElementById("div" + id);
+            div.style.display = "none";
             event.dataTransfer.setData("text", event.target.id);
         }
 
@@ -216,8 +216,9 @@ if (!isset($_SESSION["credenziali"])) {
 
         async function rilascio(data) {
             var elementoSelezionato = document.getElementById(data);
+            console.log("id:" + event.target.id);
             var desc = document.getElementById("descrizione" + data);
-            console.log(desc);
+            console.log("desc" + desc);
             var id = parseInt(elementoSelezionato.dataset.id);
             var descrizione = desc.innerText;
             var stato = parseInt(elementoSelezionato.dataset.stato);
@@ -237,7 +238,7 @@ if (!isset($_SESSION["credenziali"])) {
                 }
             });
         }
-        
+
         var num = 0;
 
         function mostraModificaDescrizione(event) {
@@ -264,20 +265,30 @@ if (!isset($_SESSION["credenziali"])) {
                 }
             }
 
+            let inviato = false;
+
             function gestisciInvio(event) {
-                if (event.key === "Enter") {
+                if (event.key === "Enter" && !inviato) {
+                    inviato = true;
                     event.preventDefault();
                     const descrizioneElementi = document.querySelectorAll('.descrizione-task');
                     descrizioneElementi.forEach(desc => {
                         desc.blur();
                     });
-                    inviaDati(descrizione.innerText, stato, utente, task);
-
+                    // se è una promessa
+                    inviaDati(descrizione.innerText, stato, utente, task)
+                        .then(() => {
+                            inviato = false;
+                        })
+                        .catch(() => {
+                            inviato = false;
+                        });
                 }
-                event.key="";
+                event.key = "";
             }
+
         }
-        
+
         async function inviaDati(contenutoDescrizione, stato, utente, task) {
             var inviaDescrizione = contenutoDescrizione;
             const risposta = await fetch(`modificaDescrizione.php`, {

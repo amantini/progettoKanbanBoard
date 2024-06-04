@@ -402,7 +402,6 @@ h3 {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
   padding-top: 20px;
 }
@@ -412,13 +411,15 @@ h3 {
   margin: 2% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* Aumenta la larghezza del modal */
-  max-width: 1200px; /* Imposta una larghezza massima */
+  width: 80%; /* Increases the modal width */
+  max-width: 1200px; /* Sets a maximum width */
   height: 80%;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
+  overflow: auto; /* Allows the content to scroll */
 }
+
+
 
 .close-log {
   color: #aaa;
